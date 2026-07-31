@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SEO from '../../components/SEO.astro';
+import RelatedContent from '../../components/RelatedContent.astro';
+import { getCollection } from 'astro:content';
+import { siteConfig } from '../../config';
+
+export async function getStaticPaths() {
+  const decisions = await getCollection('decisions');
+  return decisions.map((d) => ({
+    params: { slug: d.id },
+    props: { decision: d },
+  }));
+}
+
+const { decision } = Astro.props;
+const { data } = decision;
+const formattedDate = new Date(data.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+---
+
+<BaseLayout>
+  <SEO slot="head" title={`${data.title} - ${siteConfig.title}`} description={data.context} type="article" />
+  <main class="page-container" style="max-width: 800px;">
+    <article class="decision-detail">
+      <header class="decision-header">
+        <p class="decision-date">{formattedDate}</p>
+        <h1>{data.title}</h1>
+      </header>
+
+      <section class="decision-context-section">
+        <h2>Context</h2>
+        <p>{data.context}</p>
+      </section>
+
+      <section class="decision-made">
+        <h2>Decision</h2>
+        <p>{data.decision}</p>
+      </section>
+
+      <section class="decision-alternatives">
+        <h2>Alternatives Considered</h2>
+        <div class="alternatives-list">
+          {data.alternatives.map((alt: any) => (
+            <div class="alternative-item">
+              <h3>{alt.option}</h3>
+              {alt.pros && alt.pros.length > 0 && (
+                <div class="alt-pros">
+                  <strong>Pros</strong>
+                  <ul>{alt.pros.map((p: string) => <li>{p}</li>)}</ul>
+                </div>
+              )}
+              {alt.cons && alt.cons.length > 0 && (
+                <div class="alt-cons">
+                  <strong>Cons</strong>
+                  <ul>{alt.cons.map((c: string) => <li>{c}</li>)}</ul>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="decision-reasoning-section">
+        <h2>Reasoning</h2>
+        <p>{data.reasoning}</p>
+      </section>
+
+      {data.tags && data.tags.length > 0 && (
+        <div class="decision-tags">
+          {data.tags.map((tag: string) => <span class="tag">{tag}</span>)}
+        </div>
+      )}
+
+      {data.relatedProjects && data.relatedProjects.length > 0 && (
+        <RelatedContent type="projects" slugs={data.relatedProjects} heading="Related Projects" />
+      )}
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .decision-detail { padding: var(--space-2xl) 0; }
+  .decision-header { margin-bottom: var(--space-3xl); padding-bottom: var(--space-2xl); border-bottom: 1px solid var(--color-border); }
+  .decision-header h1 { font-size: var(--font-size-4xl); margin-bottom: var(--space-md); }
+  .decision-date { font-size: var(--font-size-sm); color: var(--color-text-muted); margin-bottom: var(--space-md); text-transform: uppercase; letter-spacing: 0.05em; }
+  .decision-context-section,
+  .decision-made,
+  .decision-alternatives,
+  .decision-reasoning-section { margin-bottom: var(--space-3xl); }
+  .decision-context-section h2,
+  .decision-made h2,
+  .decision-alternatives h2,
+  .decision-reasoning-section h2 { font-size: var(--font-size-2xl); margin-bottom: var(--space-md); }
+  .decision-context-section p,
+  .decision-made p,
+  .decision-reasoning-section p { font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text); }
+  .alternatives-list { display: flex; flex-direction: column; gap: var(--space-lg); }
+  .alternative-item { padding: var(--space-lg); border: 1px solid var(--color-border); border-radius: var(--border-radius-md); background: var(--color-bg-secondary); }
+  .alternative-item h3 { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-md); }
+  .alt-pros, .alt-cons { margin-top: var(--space-sm); }
+  .alt-pros strong, .alt-cons strong { display: block; font-size: var(--font-size-sm); color: var(--color-text-muted); margin-bottom: var(--space-xs); text-transform: uppercase; letter-spacing: 0.05em; }
+  .alt-pros ul, .alt-cons ul { list-style: none; padding: 0; }
+  .alt-pros li, .alt-cons li { font-size: var(--font-size-base); color: var(--color-text-secondary); padding: var(--space-xs) 0; padding-left: var(--space-md); position: relative; }
+  .alt-pros li::before { content: "+"; position: absolute; left: 0; color: var(--color-accent); }
+  .alt-cons li::before { content: "-"; position: absolute; left: 0; color: var(--color-text-muted); }
+  .decision-tags { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-top: var(--space-lg); }
+  .tag { font-size: 0.75rem; padding: 0.25rem 0.5rem; background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--border-radius-sm); color: var(--color-text-muted); }
+</style>

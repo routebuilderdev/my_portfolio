@@ -1,0 +1,13 @@
+---
+export interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<p class="page-stats">{text}</p>
+
+<style>
+  .page-stats { font-size: var(--font-size-sm); color: var(--color-text-muted); margin-top: var(--space-md); }
+</style>

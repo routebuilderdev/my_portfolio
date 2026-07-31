@@ -1,0 +1,26 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import SEO from '../../components/SEO.astro';
+import { getCollection, render } from 'astro:content';
+import { siteConfig } from '../../config';
+
+export async function getStaticPaths() {
+  const writing = await getCollection('writing');
+  return writing.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { data } = post;
+const { Content } = await render(post);
+const formattedDate = new Date(data.publishDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+---
+
+<ArticleLayout>
+  <SEO slot="head" title={`${data.title} - ${siteConfig.title}`} description={data.description} type="article" />
+  <h1>{data.title}</h1>
+  <p class="article-meta">{formattedDate}</p>
+  <Content />
+</ArticleLayout>

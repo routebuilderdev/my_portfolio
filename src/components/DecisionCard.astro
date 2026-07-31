@@ -1,0 +1,37 @@
+---
+export interface Props {
+  title: string;
+  slug: string;
+  date: Date;
+  context: string;
+  tags?: string[];
+}
+
+const { title, slug, date, context, tags } = Astro.props;
+const formattedDate = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+---
+
+<article class="decision-card">
+  <span class="decision-date">{formattedDate}</span>
+  <h3 class="decision-title">
+    <a href={`/decisions/${slug}`}>{title}</a>
+  </h3>
+  <p class="decision-context">{context}</p>
+  {tags && tags.length > 0 && (
+    <div class="decision-tags">
+      {tags.map((tag) => <span class="decision-tag">{tag}</span>)}
+    </div>
+  )}
+</article>
+
+<style>
+  .decision-card { padding: var(--space-lg) 0; border-bottom: 1px solid var(--color-border); }
+  .decision-card:last-child { border-bottom: none; }
+  .decision-date { display: block; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted); margin-bottom: var(--space-sm); }
+  .decision-title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-sm); }
+  .decision-title a { color: var(--color-text); text-decoration: none; }
+  .decision-title a:hover { color: var(--color-accent); }
+  .decision-context { font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); margin-bottom: var(--space-sm); }
+  .decision-tags { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+  .decision-tag { font-size: 0.75rem; padding: 0.125rem 0.5rem; background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--border-radius-sm); color: var(--color-text-muted); }
+</style>

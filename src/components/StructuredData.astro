@@ -1,0 +1,27 @@
+---
+export interface Props {
+  type: 'WebSite' | 'Person';
+}
+
+const { type } = Astro.props;
+import { siteConfig } from '../config';
+
+const structured = type === 'WebSite'
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: siteConfig.title,
+      url: siteConfig.url,
+      description: siteConfig.description,
+    }
+  : {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: siteConfig.author.name,
+      jobTitle: siteConfig.author.title,
+      email: siteConfig.author.email,
+      url: siteConfig.url,
+    };
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(structured)} />

@@ -1,0 +1,30 @@
+---
+title: "Monorepo Over Microservices"
+date: 2026-03-14
+context: "Starting the No Scratch Nav project, I needed to decide how to structure the codebase. With AI as my pair programmer, the choice between monorepo and separate repos had significant implications."
+decision: "Used a monorepo with shared types, unified CI/CD, and a single deployment pipeline."
+alternatives:
+  - option: "Separate frontend and backend repos"
+    pros:
+      - "Independent deployments"
+      - "Isolated codebases"
+    cons:
+      - "More context to manage across AI sessions"
+      - "Duplicate CI/CD configuration"
+      - "Harder to share types"
+  - option: "Microservices architecture"
+    pros:
+      - "Independent scaling"
+      - "Team ownership boundaries"
+    cons:
+      - "Massive overhead for a solo developer"
+      - "AI loses context across services"
+      - "Complex networking for simple features"
+reasoning: "AI tools work best with a single coherent context. A monorepo means all code, types, and configuration are in one place — AI can understand the full system without switching contexts. Single CI/CD pipeline reduces debugging surface."
+tags:
+  - "architecture"
+  - "monorepo"
+  - "ci-cd"
+relatedProjects:
+  - "no-scratch-nav"
+---

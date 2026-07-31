@@ -1,0 +1,63 @@
+---
+title: "Permesso di Soggiorno Assistant"
+role: "Creator & Developer"
+year: 2026
+duration: "2 days"
+teamSize: 1
+outcomeSummary: "Built an Advanced RAG system for Italian residence permit procedures — smart chunking, scenario detection, confidence scoring, citation tracking"
+overview: "A comprehensive retrieval-augmented generation system that helps users navigate Italian residence permit procedures. Processes government legal documents with semantic chunking, scenario-aware retrieval, and confidence-scored answers with citations."
+problem: "Italian residence permit procedures are complex, multi-step processes with frequent regulation changes. Official information is scattered across PDFs, government websites, and legal texts. Non-Italian speakers struggle to find accurate, up-to-date guidance."
+constraints:
+  - "Must use local models only (no OpenAI/cloud APIs) — legal data privacy"
+  - "Italian legal text requires specialized chunking that preserves section/article structure"
+  - "Must handle multiple document sources: PDFs, web pages, unstructured text"
+  - "Answers need confidence scoring with citations — users must know when to consult a lawyer"
+  - "Built entirely with AI assistance"
+approach: "Designed a modular RAG pipeline with semantic chunking tuned for Italian legal documents. Used Ollama with Qwen3 14B for the LLM and nomic-embed-text for embeddings. ChromaDB handles vector storage with persistent indexing. Built a Streamlit chat interface with confidence display and numbered citations. Added automated daily crawlers that detect changes in government sources."
+keyDecisions:
+  - decision: "Local models over cloud APIs (OpenAI/Claude)"
+    reasoning: "Legal document privacy is critical — users shouldn't send sensitive permit questions to cloud APIs. Local Ollama models provide comparable quality with zero data leaving the machine."
+    alternatives:
+      - "OpenAI GPT-4 for better accuracy"
+      - "Claude Haiku for lower cost"
+  - decision: "ChromaDB over Pinecone/Weaviate"
+    reasoning: "ChromaDB runs locally, persists to disk, and integrates naturally with the local-first architecture. No API keys, no cloud dependencies, no data leaving the system."
+    alternatives:
+      - "Pinecone for managed vector search"
+      - "Weaviate for hybrid search"
+  - decision: "Semantic chunking preserving legal structure"
+    reasoning: "Italian legal documents use specific section/article/paragraph hierarchy. Naive token-splitting would break legal context. Custom chunker preserves document structure while creating searchable chunks."
+    alternatives:
+      - "Recursive character text splitting"
+      - "Token-based splitting"
+  - decision: "Scenario detection with query boosting"
+    reasoning: "Permit procedures vary wildly by scenario (work permit vs family reunification vs asylum). Detecting the scenario and boosting relevant documents in the vector search dramatically improves answer relevance."
+    alternatives:
+      - "Flat retrieval without scenario awareness"
+      - "Separate vector stores per scenario"
+techStack:
+  - "Python"
+  - "Streamlit"
+  - "Ollama"
+  - "Qwen3 14B"
+  - "nomic-embed-text"
+  - "ChromaDB"
+  - "Crawl4AI"
+  - "APScheduler"
+  - "pytest"
+impact:
+  metrics:
+    - label: "Source Types"
+      value: "PDF + Web + Text"
+    - label: "Crawl Sources"
+      value: "Official + Legal + Case Studies"
+  qualitative: "The system processes Italian government documents from multiple sources, preserves legal document structure through smart chunking, and provides confidence-scored answers with numbered citations. The daily update scheduler keeps the knowledge base current with changing regulations."
+learnings:
+  - "Local models (Ollama) are viable alternatives to cloud APIs for privacy-sensitive domains"
+  - "Legal document chunking requires domain-aware strategies — naive splitting destroys context"
+  - "Scenario detection dramatically improves RAG quality for multi-domain knowledge bases"
+  - "Confidence scoring with fallback recommendations is essential for legal/financial domains"
+featured: false
+status: completed
+order: 3
+---

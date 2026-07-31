@@ -1,0 +1,49 @@
+---
+title: "ShootLight"
+role: "Creator & Developer"
+year: 2026
+duration: "1 week"
+outcomeSummary: "Built a PWA for photographers with real-time golden hour tracking, weather alerts, and offline support"
+overview: "ShootLight is a progressive web app that helps photographers find the best lighting conditions for outdoor shoots."
+problem: "Photographers waste time checking multiple apps for weather, golden hour timing, and location conditions. No single tool combines geolocation-aware lighting predictions with push notifications."
+constraints:
+  - "Must work offline for remote locations"
+  - "Push notifications without native app stores"
+  - "Accurate sunrise/sunset and golden hour calculations"
+  - "Built entirely with AI assistance"
+approach: "Built as a PWA from the start for offline-first capability. Integrated weather API for real-time conditions, built custom golden hour calculator, and used service workers for offline caching. Push notifications deliver alerts when optimal shooting conditions approach."
+keyDecisions:
+  - decision: "PWA over native mobile app"
+    reasoning: "PWA eliminates app store barriers, works across platforms, and supports offline caching. Service workers provide push notifications without native code."
+    alternatives:
+      - "React Native app"
+      - "Flutter cross-platform app"
+  - decision: "Offline-first architecture"
+    reasoning: "Photographers often shoot in areas with poor connectivity. Cache weather data and golden hour predictions locally for offline access."
+    alternatives:
+      - "Online-only with loading states"
+      - "Skeleton UI with retry logic"
+techStack:
+  - "React"
+  - "TypeScript"
+  - "PWA"
+  - "Service Workers"
+  - "Weather API"
+  - "Geolocation API"
+impact:
+  metrics:
+    - label: "Coverage"
+      value: "Cross-platform"
+    - label: "Offline"
+      value: "Full support"
+  qualitative: "The PWA approach means photographers can check conditions from anywhere, even without signal. Push notifications eliminate the need to constantly refresh weather apps."
+learnings:
+  - "PWAs are a viable alternative to native apps for utility tools"
+  - "Service worker caching requires careful invalidation strategy"
+  - "Geolocation + weather data creates genuinely useful context-aware apps"
+featured: true
+status: completed
+order: 2
+relatedDecisions:
+  - "pwa-over-native"
+---

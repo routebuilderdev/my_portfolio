@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SEO from '../../components/SEO.astro';
+import DecisionCard from '../../components/DecisionCard.astro';
+import PageStats from '../../components/PageStats.astro';
+import { getCollection } from 'astro:content';
+import { pagesConfig } from '../../pages.config';
+
+const allDecisions = await getCollection('decisions');
+const sortedDecisions = allDecisions.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const totalDecisions = sortedDecisions.length;
+---
+
+<BaseLayout>
+  <SEO slot="head" title={pagesConfig.decisions.title} description={pagesConfig.decisions.description} type="website" />
+  <main class="page-container">
+    <header class="page-header">
+      <h1 class="page-title">{pagesConfig.decisions.heading}</h1>
+      <p class="page-intro">{pagesConfig.decisions.intro}</p>
+      <PageStats text={`${totalDecisions} documented decisions`} />
+    </header>
+    {sortedDecisions.length > 0 ? (
+      <div class="card-list">
+        {sortedDecisions.map((decision) => (
+          <DecisionCard
+            title={decision.data.title}
+            slug={decision.id}
+            date={decision.data.date}
+            context={decision.data.context}
+            tags={decision.data.tags}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="empty-state">No decisions documented yet.</p>
+    )}
+  </main>
+</BaseLayout>

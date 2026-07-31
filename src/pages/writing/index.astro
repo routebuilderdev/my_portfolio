@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SEO from '../../components/SEO.astro';
+import ForwardLink from '../../components/ForwardLink.astro';
+import { getCollection } from 'astro:content';
+import { pagesConfig } from '../../pages.config';
+
+const allWriting = await getCollection('writing');
+const publishedWriting = allWriting
+  .filter(w => !w.data.draft)
+  .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime());
+---
+
+<BaseLayout>
+  <SEO slot="head" title={pagesConfig.writing.title} description={pagesConfig.writing.description} type="website" />
+  <main class="page-container">
+    <header class="page-header">
+      <h1 class="page-title">{pagesConfig.writing.heading}</h1>
+      <p class="page-intro">{pagesConfig.writing.intro}</p>
+    </header>
+    {publishedWriting.length > 0 ? (
+      <div class="writing-list">
+        {publishedWriting.map((post) => {
+          const date = new Date(post.data.publishDate);
+          const formattedDate = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+          return (
+            <article class="writing-card">
+              <a href={`/writing/${post.id}`} class="writing-link">
+                <h3 class="writing-title">{post.data.title}</h3>
+                <p class="writing-description">{post.data.description}</p>
+                <div class="writing-meta">
+                  <time>{formattedDate}</time>
+                  {post.data.tags && post.data.tags.length > 0 && (
+                    <div class="writing-tags">
+                      {post.data.tags.map((tag: string) => <span class="tag">{tag}</span>)}
+                    </div>
+                  )}
+                </div>
+              </a>
+            </article>
+          );
+        })}
+      </div>
+    ) : (
+      <p class="empty-state">No writing published yet.</p>
+    )}
+  </main>
+</BaseLayout>
+
+<style>
+  .writing-list { display: flex; flex-direction: column; gap: var(--space-lg); }
+  .writing-card { padding: var(--space-xl); border: 1px solid var(--color-border); border-radius: var(--border-radius-md); transition: border-color var(--transition-base); }
+  .writing-card:hover { border-color: var(--color-text-muted); }
+  .writing-link { text-decoration: none; color: inherit; }
+  .writing-title { font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); color: var(--color-text); margin-bottom: var(--space-sm); }
+  .writing-description { font-size: var(--font-size-base); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin-bottom: var(--space-md); }
+  .writing-meta { display: flex; align-items: center; gap: var(--space-md); flex-wrap: wrap; }
+  .writing-meta time { font-size: var(--font-size-sm); color: var(--color-text-muted); }
+  .writing-tags { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+  .tag { font-size: 0.75rem; padding: 0.125rem 0.5rem; background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--border-radius-sm); color: var(--color-text-muted); }
+</style>

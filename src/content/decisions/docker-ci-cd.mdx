@@ -1,0 +1,28 @@
+---
+title: "Docker + CI/CD from Day One"
+date: 2026-03-20
+context: "Many developers postpone Docker and CI/CD until late in a project. For an AI-assisted build, automation is even more critical."
+decision: "Containerized the application with Docker and set up GitHub Actions CI/CD before building core features."
+alternatives:
+  - option: "Manual deployment"
+    pros:
+      - "No upfront configuration"
+      - "Simple to start"
+    cons:
+      - "Error-prone manual steps"
+      - "No testing pipeline"
+      - "Harder for AI to debug production issues"
+  - option: "Deploy after features are complete"
+    pros:
+      - "Focus on code first"
+    cons:
+      - "Integration surprises late in development"
+      - "AI iterations are slower without feedback loop"
+reasoning: "AI can iterate much faster when the feedback loop is automated. Every push triggers tests and deployment — AI sees the results immediately and fixes issues. This creates a tight prompt-build-test cycle."
+tags:
+  - "devops"
+  - "ci-cd"
+  - "docker"
+relatedProjects:
+  - "no-scratch-nav"
+---

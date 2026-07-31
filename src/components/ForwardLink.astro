@@ -1,0 +1,23 @@
+---
+export interface Props {
+  href: string;
+  text: string;
+  variant?: 'default' | 'muted';
+}
+
+const { href, text, variant = 'default' } = Astro.props;
+---
+
+<a href={href} class:list={['forward-link', { 'forward-link--muted': variant === 'muted' }]}>
+  {text}
+  <span class="forward-arrow">&rarr;</span>
+</a>
+
+<style>
+  .forward-link { display: inline-flex; align-items: center; gap: var(--space-sm); font-size: 0.9375rem; font-weight: 500; color: var(--color-text); text-decoration: none; transition: color var(--transition-base); }
+  .forward-link:hover { color: var(--color-accent); }
+  .forward-link--muted { font-size: 0.875rem; color: var(--color-text-muted); }
+  .forward-link--muted:hover { color: var(--color-text-secondary); }
+  .forward-arrow { transition: transform var(--transition-base); }
+  .forward-link:hover .forward-arrow { transform: translateX(4px); }
+</style>

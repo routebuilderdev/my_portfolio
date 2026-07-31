@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SEO from '../components/SEO.astro';
+import { siteConfig } from '../config';
+import { pagesConfig } from '../pages.config';
+
+const socialLinks = Object.entries(siteConfig.social).filter(([_, url]) => url);
+---
+
+<BaseLayout>
+  <SEO slot="head" title={pagesConfig.contact.title} description={pagesConfig.contact.description} type="website" />
+  <main class="page-container" style="max-width: 600px;">
+    <header class="page-header">
+      <h1 class="page-title">{pagesConfig.contact.heading}</h1>
+    </header>
+    <div class="contact-content">
+      <p class="contact-intro">
+        Looking for someone who ships production apps with AI, documents their thinking, and delivers real results?
+      </p>
+      {siteConfig.author.email && (
+        <p class="contact-email">
+          <a href={`mailto:${siteConfig.author.email}`}>{siteConfig.author.email}</a>
+        </p>
+      )}
+      {socialLinks.length > 0 && (
+        <div class="contact-social">
+          {socialLinks.map(([platform, url]) => (
+            <a href={url} target="_blank" rel="noopener noreferrer" class="contact-link">
+              {platform.charAt(0).toUpperCase() + platform.slice(1)}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .contact-content { padding: var(--space-2xl) 0; }
+  .contact-intro { font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); margin-bottom: var(--space-xl); }
+  .contact-email { margin-bottom: var(--space-xl); }
+  .contact-email a { font-size: var(--font-size-xl); color: var(--color-accent); text-decoration: none; }
+  .contact-email a:hover { color: var(--color-accent-hover); }
+  .contact-social { display: flex; gap: var(--space-md); flex-wrap: wrap; }
+  .contact-link { font-size: var(--font-size-base); color: var(--color-text-secondary); text-decoration: none; padding: var(--space-sm) var(--space-md); border: 1px solid var(--color-border); border-radius: var(--border-radius-md); }
+  .contact-link:hover { color: var(--color-text); border-color: var(--color-text-muted); }
+</style>

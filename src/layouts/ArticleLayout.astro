@@ -1,0 +1,47 @@
+---
+import BaseLayout from './BaseLayout.astro';
+---
+
+<BaseLayout>
+  <slot name="head" slot="head" />
+  <article class="article-layout">
+    <slot />
+  </article>
+  <style>
+    .article-layout {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: var(--space-2xl) var(--space-lg);
+    }
+    .article-layout :global(h1) {
+      font-size: var(--font-size-4xl);
+      margin-bottom: var(--space-md);
+    }
+    .article-layout :global(.article-meta) {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2xl);
+    }
+    .article-layout :global(h2) {
+      font-size: var(--font-size-2xl);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-md);
+    }
+    .article-layout :global(p) {
+      font-size: var(--font-size-base);
+      line-height: var(--line-height-relaxed);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-md);
+    }
+    .article-layout :global(ul), .article-layout :global(ol) {
+      margin-bottom: var(--space-md);
+      padding-left: var(--space-lg);
+    }
+    .article-layout :global(li) {
+      font-size: var(--font-size-base);
+      line-height: var(--line-height-relaxed);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--space-sm);
+    }
+  </style>
+</BaseLayout>

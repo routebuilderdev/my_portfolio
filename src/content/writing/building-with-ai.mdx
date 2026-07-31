@@ -1,0 +1,48 @@
+---
+title: "How I Build Production Apps With Zero Code Knowledge"
+description: "My workflow for building full-stack applications using AI as an engineering partner — not just a code generator."
+publishDate: 2026-07-01
+tags:
+  - "AI"
+  - "workflow"
+  - "vibe-coding"
+draft: false
+---
+
+## The Setup
+
+I don't know how to code. I've never written a line of code before starting this journey. Yet I've shipped two production applications with 221+ tests, Docker CI/CD, and real users.
+
+Here's exactly how I do it.
+
+## The Workflow
+
+### 1. Problem First
+
+I start with a clear problem statement. Not "build an app" but "drivers don't know if an alley fits their car." The AI can solve constrained problems. Vague requests produce vague code.
+
+### 2. Architecture Discussions
+
+Before writing code, I prompt the AI to discuss architecture. Database choice, monorepo vs microservices, caching strategy. The AI explains trade-offs, I make decisions based on my understanding.
+
+### 3. Iterative Building
+
+Each feature is one prompt cycle:
+- Explain what I want
+- AI writes the code
+- I review the logic (not syntax)
+- Commit and push
+- CI/CD runs tests
+- If red, I paste the error back to AI
+
+### 4. Testing Is Non-Negotiable
+
+I can't manually verify edge cases. Tests are my safety net. Every feature includes tests written by AI and reviewed by me for logical correctness.
+
+## Key Lessons
+
+- **Constrained problems** produce better code than open-ended ones
+- **Monorepo** keeps AI context coherent
+- **CI/CD** creates a tight feedback loop
+- **Read the tests** to understand what the code does
+- **You don't need to write code to ship code**

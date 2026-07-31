@@ -1,0 +1,113 @@
+---
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import SEO from '../../components/SEO.astro';
+import { getCollection, render } from 'astro:content';
+import { siteConfig } from '../../config';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+---
+
+<CaseStudyLayout>
+  <SEO slot="head" title={`${data.title} - ${siteConfig.title}`} description={data.outcomeSummary} type="article" />
+  <div class="case-study-header">
+    <h1>{data.title}</h1>
+    <div class="case-study-meta">
+      <span>{data.role}</span>
+      <span class="meta-separator">·</span>
+      <span>{data.year}</span>
+      {data.duration && <><span class="meta-separator">·</span><span>{data.duration}</span></>}
+      {data.teamSize && <><span class="meta-separator">·</span><span>Team of {data.teamSize}</span></>}
+    </div>
+    <p class="outcome-summary">{data.outcomeSummary}</p>
+  </div>
+
+  <div class="case-study-section">
+    <h2>Overview</h2>
+    <p>{data.overview}</p>
+  </div>
+
+  <div class="case-study-section">
+    <h2>The Problem</h2>
+    <p>{data.problem}</p>
+  </div>
+
+  <div class="case-study-section">
+    <h2>Constraints</h2>
+    <ul class="constraints-list">
+      {data.constraints.map((c: string) => <li>{c}</li>)}
+    </ul>
+  </div>
+
+  <div class="case-study-section">
+    <h2>Approach</h2>
+    <p>{data.approach}</p>
+  </div>
+
+  <div class="case-study-section">
+    <h2>Key Decisions</h2>
+    <div class="decisions-list">
+      {data.keyDecisions.map((kd: any) => (
+        <div class="decision-item">
+          <div class="decision-title">{kd.decision}</div>
+          <div class="decision-reasoning">
+            <strong>Reasoning</strong>
+            <p>{kd.reasoning}</p>
+          </div>
+          {kd.alternatives && kd.alternatives.length > 0 && (
+            <div class="decision-alternatives">
+              <strong>Alternatives Considered</strong>
+              <ul>
+                {kd.alternatives.map((alt: string) => <li>{alt}</li>)}
+              </ul>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="case-study-section">
+    <h2>Tech Stack</h2>
+    <ul class="tech-stack-list">
+      {data.techStack.map((tech: string) => <li>{tech}</li>)}
+    </ul>
+  </div>
+
+  <div class="case-study-section">
+    <h2>Impact</h2>
+    {data.impact.metrics && data.impact.metrics.length > 0 && (
+      <div class="impact-metrics">
+        {data.impact.metrics.map((m: any) => (
+          <div class="metric-item">
+            <div class="metric-value">{m.value}</div>
+            <div class="metric-label">{m.label}</div>
+          </div>
+        ))}
+      </div>
+    )}
+    <p class="impact-qualitative">{data.impact.qualitative}</p>
+  </div>
+
+  <div class="case-study-section">
+    <h2>Key Learnings</h2>
+    <ul class="learnings-list">
+      {data.learnings.map((l: string) => <li>{l}</li>)}
+    </ul>
+  </div>
+
+  {Content && (
+    <div class="case-study-content">
+      <Content />
+    </div>
+  )}
+</CaseStudyLayout>

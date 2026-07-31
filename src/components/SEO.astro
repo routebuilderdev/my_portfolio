@@ -1,0 +1,30 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+  type?: 'website' | 'article';
+  image?: string;
+  noSuffix?: boolean;
+}
+
+const { title, description, type = 'website', image, noSuffix } = Astro.props;
+const siteTitle = noSuffix ? title : title;
+const siteDesc = description || '';
+const siteUrl = Astro.url;
+const siteImage = image || '/og-image.png';
+---
+
+<>
+  <title>{siteTitle}</title>
+  <meta name="description" content={siteDesc} />
+  <meta property="og:title" content={siteTitle} />
+  <meta property="og:description" content={siteDesc} />
+  <meta property="og:type" content={type} />
+  <meta property="og:url" content={siteUrl} />
+  <meta property="og:image" content={siteImage} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={siteTitle} />
+  <meta name="twitter:description" content={siteDesc} />
+  <meta name="twitter:image" content={siteImage} />
+  <link rel="canonical" href={siteUrl} />
+</>

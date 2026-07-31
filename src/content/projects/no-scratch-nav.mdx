@@ -1,0 +1,58 @@
+---
+title: "No Scratch Nav"
+role: "Creator & Developer"
+year: 2026
+duration: "Ongoing"
+outcomeSummary: "Built a full-stack parking navigation app with AI — 221 tests, 30+ API endpoints, CI/CD pipeline"
+overview: "No Scratch Nav is a parking assistance navigation app that helps drivers find routes that minimize scratch risk. Built entirely with AI assistance."
+problem: "Drivers often don't know alley widths, clearance heights, or parking space sizes for their specific vehicle. Existing navigation apps lack scratch-risk awareness."
+constraints:
+  - "No prior coding experience when starting"
+  - "Must handle real-time location data accurately"
+  - "Needs to work on both mobile and desktop"
+  - "Zero budget for third-party mapping APIs"
+approach: "Built incrementally with AI pair programming. Started with a React frontend and Python Flask API, then added PostgreSQL for route data, Redis for caching, and a Telegram bot for notifications. Each iteration added one production-ready feature."
+keyDecisions:
+  - decision: "Monorepo structure from day one"
+    reasoning: "AI tools work better with a single repo context. Shared types, single CI config, easier to prompt around."
+    alternatives:
+      - "Separate frontend and backend repos"
+      - "Microservices architecture"
+  - decision: "PostgreSQL over MongoDB"
+    reasoning: "Spatial queries need relational integrity. PostgreSQL with PostGIS handles geo-routes properly."
+    alternatives:
+      - "MongoDB for flexibility"
+      - "SQLite for simplicity"
+  - decision: "Docker + CI/CD before feature completion"
+    reasoning: "AI can iterate faster when deployment is automated. Pipeline catches bugs before they reach production."
+    alternatives:
+      - "Manual deploy after features are complete"
+      - "Single server with no containerization"
+techStack:
+  - "React"
+  - "TypeScript"
+  - "Python"
+  - "Flask"
+  - "PostgreSQL"
+  - "Redis"
+  - "Docker"
+  - "GitHub Actions"
+  - "Telegram Bot API"
+impact:
+  metrics:
+    - label: "Tests"
+      value: "221 passing"
+    - label: "API Endpoints"
+      value: "30+"
+    - label: "Commits"
+      value: "160+"
+  qualitative: "Deployed at noscratchnav.com with automated CI/CD. The Telegram bot provides real-time notifications. The app demonstrates that AI-assisted development can ship production-quality software."
+learnings:
+  - "Monorepo structure makes AI prompting more coherent"
+  - "Investment in CI/CD early saves debugging time later"
+  - "AI can handle full-stack development when given clear, constrained problems"
+  - "Testing is critical when you can't manually validate every edge case"
+featured: true
+status: ongoing
+order: 1
+---

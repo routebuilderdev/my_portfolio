@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+
+export interface Props {
+  type: 'projects' | 'decisions';
+  slugs: string[];
+  heading?: string;
+}
+
+const { type, slugs, heading = 'Related' } = Astro.props;
+const collection = await getCollection(type);
+const related = collection.filter(c => slugs.includes(c.id));
+---
+
+{related.length > 0 && (
+  <section class="related-content">
+    <h3>{heading}</h3>
+    <ul>
+      {related.map((item) => (
+        <li><a href={`/${type}/${item.id}`}>{item.data.title}</a></li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<style>
+  .related-content { margin-top: var(--space-2xl); padding-top: var(--space-xl); border-top: 1px solid var(--color-border); }
+  .related-content h3 { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-md); }
+  .related-content ul { list-style: none; padding: 0; }
+  .related-content li { margin-bottom: var(--space-sm); }
+  .related-content a { color: var(--color-accent); font-size: var(--font-size-base); }
+</style>

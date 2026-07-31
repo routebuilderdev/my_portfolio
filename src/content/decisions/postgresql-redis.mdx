@@ -1,0 +1,29 @@
+---
+title: "PostgreSQL for Spatial Data"
+date: 2026-03-16
+context: "No Scratch Nav needed to store and query route data, alley dimensions, and parking locations. The database choice impacted query performance and development complexity."
+decision: "Chose PostgreSQL with PostGIS extension for spatial queries and route optimization."
+alternatives:
+  - option: "MongoDB"
+    pros:
+      - "Flexible schema"
+      - "Easy to start with"
+    cons:
+      - "No native spatial querying"
+      - "Eventual consistency adds complexity"
+  - option: "SQLite"
+    pros:
+      - "Zero configuration"
+      - "Lightweight"
+    cons:
+      - "No concurrent writes"
+      - "Limited spatial support"
+      - "Not production-ready for APIs"
+reasoning: "Spatial queries (find routes near location, calculate distances) need relational integrity and proper indexing. PostgreSQL with PostGIS handles this natively. Also, AI tools have extensive training data on PostgreSQL patterns."
+tags:
+  - "database"
+  - "architecture"
+  - "postgresql"
+relatedProjects:
+  - "no-scratch-nav"
+---

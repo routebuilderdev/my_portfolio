@@ -1,0 +1,30 @@
+---
+title: "PWA Over Native App"
+date: 2026-04-07
+context: "ShootLight needed mobile access with offline support and push notifications. The platform decision affected reach, development speed, and user experience."
+decision: "Built ShootLight as a Progressive Web App instead of a native mobile application."
+alternatives:
+  - option: "React Native"
+    pros:
+      - "Access to native device APIs"
+      - "App store visibility"
+    cons:
+      - "Requires native build tools and stores"
+      - "Separate code for iOS and Android nuances"
+      - "Slower iteration with AI"
+  - option: "Flutter"
+    pros:
+      - "Single codebase for both platforms"
+      - "Good performance"
+    cons:
+      - "Dart language — less AI training data"
+      - "Heavier bundle size"
+      - "Still requires app store submission"
+reasoning: "PWA gives cross-platform reach without app store barriers. Service workers provide offline caching and push notifications. AI tools have extensive training on React/PWA patterns, making iteration faster."
+tags:
+  - "architecture"
+  - "pwa"
+  - "mobile"
+relatedProjects:
+  - "shootlight"
+---

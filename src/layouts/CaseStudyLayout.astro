@@ -41,6 +41,12 @@ import BaseLayout from './BaseLayout.astro';
       color: var(--color-accent);
       font-weight: var(--font-weight-medium);
     }
+    .case-study-layout :global(.repo-link) {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-top: var(--space-lg);
+    }
     .case-study-layout :global(.case-study-section) { margin-bottom: var(--space-3xl); }
     .case-study-layout :global(.case-study-section h2) {
       font-size: var(--font-size-4xl);

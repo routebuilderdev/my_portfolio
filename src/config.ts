@@ -15,7 +15,7 @@ export const siteConfig = {
     location: getEnv('SITE_AUTHOR_LOCATION', ''),
   },
   social: {
-    github: getEnv('SOCIAL_GITHUB', ''),
+    github: getEnv('SOCIAL_GITHUB', 'https://github.com/routebuilderdev'),
     linkedin: getEnv('SOCIAL_LINKEDIN', ''),
     twitter: getEnv('SOCIAL_TWITTER', ''),
     mastodon: getEnv('SOCIAL_MASTODON', ''),

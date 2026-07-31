@@ -8,14 +8,16 @@ export interface Props {
   techStack: string[];
   featured?: boolean;
   status?: string;
+  liveUrl?: string;
 }
 
-const { title, slug, outcomeSummary, role, year, techStack, featured, status } = Astro.props;
+const { title, slug, outcomeSummary, role, year, techStack, featured, status, liveUrl } = Astro.props;
 ---
 
 <a href={`/projects/${slug}`} class:list={['project-card', { 'project-card--featured': featured }]}>
   <div class="project-card-header">
     {featured && <span class="project-featured">Featured</span>}
+    {liveUrl && <span class="project-live">Live</span>}
     {status && status !== 'completed' && <span class="project-status">{status}</span>}
   </div>
   <h3 class="project-title">{title}</h3>
@@ -37,6 +39,7 @@ const { title, slug, outcomeSummary, role, year, techStack, featured, status } =
   .project-card--featured { border-color: var(--color-accent-muted); background: var(--gradient-card); }
   .project-card-header { display: flex; gap: var(--space-sm); margin-bottom: var(--space-sm); }
   .project-featured { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-accent); }
+  .project-live { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-accent); border: 1px solid var(--color-accent-muted); border-radius: var(--border-radius-sm); padding: 0.125rem 0.375rem; }
   .project-status { font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); }
   .project-title { font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); color: var(--color-text); margin-bottom: var(--space-sm); }
   .project-outcome { font-size: var(--font-size-base); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin-bottom: var(--space-md); }

@@ -1,25 +1,25 @@
 ---
-title: "PostgreSQL for Spatial Data"
+title: "PostgreSQL for Structured Route Data"
 date: 2026-03-16
-context: "No Scratch Nav needed to store and query route data, alley dimensions, and parking locations. The database choice impacted query performance and development complexity."
-decision: "Chose PostgreSQL with PostGIS extension for spatial queries and route optimization."
+context: "No Scratch Nav needed to store users, routes, route requests, upvotes, and replies — data with clear relationships — and search across country, city, and keywords. The database choice affected query performance, search, and development complexity."
+decision: "Chose PostgreSQL for relational integrity and full-text search, with Redis for caching and rate limiting."
 alternatives:
   - option: "MongoDB"
     pros:
       - "Flexible schema"
       - "Easy to start with"
     cons:
-      - "No native spatial querying"
+      - "No native relational joins"
       - "Eventual consistency adds complexity"
+      - "Weaker full-text + flexible-field story than Postgres JSONB"
   - option: "SQLite"
     pros:
       - "Zero configuration"
       - "Lightweight"
     cons:
       - "No concurrent writes"
-      - "Limited spatial support"
-      - "Not production-ready for APIs"
-reasoning: "Spatial queries (find routes near location, calculate distances) need relational integrity and proper indexing. PostgreSQL with PostGIS handles this natively. Also, AI tools have extensive training data on PostgreSQL patterns."
+      - "Not production-ready for a multi-service API"
+reasoning: "The domain is relational — requests belong to users, upvotes belong to routes, replies belong to requests. PostgreSQL gives ACID integrity, full-text search, and JSONB for flexible fields (like route waypoints) in one place, and it pairs naturally with Redis for caching and rate limiting. AI tooling also has extensive Postgres training data, which made AI-assisted iteration faster."
 tags:
   - "database"
   - "architecture"

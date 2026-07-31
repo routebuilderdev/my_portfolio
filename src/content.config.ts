@@ -32,6 +32,7 @@ const projectsCollection = defineCollection({
     status: z.enum(['completed', 'ongoing', 'archived']).default('completed'),
     order: z.number().optional(),
     repo: z.string().url().optional(),
+    liveUrl: z.string().url().optional(),
     relatedProjects: z.array(z.string()).optional(),
     relatedDecisions: z.array(z.string()).optional(),
   }),

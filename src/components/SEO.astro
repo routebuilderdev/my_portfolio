@@ -1,4 +1,6 @@
 ---
+import { siteConfig } from '../config';
+
 export interface Props {
   title: string;
   description?: string;
@@ -10,8 +12,10 @@ export interface Props {
 const { title, description, type = 'website', image, noSuffix } = Astro.props;
 const siteTitle = noSuffix ? title : title;
 const siteDesc = description || '';
-const siteUrl = Astro.url;
+const path = Astro.url.pathname;
+const absUrl = new URL(path, siteConfig.url).toString();
 const siteImage = image || '/og-image.png';
+const absImage = new URL(siteImage, siteConfig.url).toString();
 ---
 
 <>
@@ -20,11 +24,11 @@ const siteImage = image || '/og-image.png';
   <meta property="og:title" content={siteTitle} />
   <meta property="og:description" content={siteDesc} />
   <meta property="og:type" content={type} />
-  <meta property="og:url" content={siteUrl} />
-  <meta property="og:image" content={siteImage} />
+  <meta property="og:url" content={absUrl} />
+  <meta property="og:image" content={absImage} />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={siteTitle} />
   <meta name="twitter:description" content={siteDesc} />
-  <meta name="twitter:image" content={siteImage} />
-  <link rel="canonical" href={siteUrl} />
+  <meta name="twitter:image" content={absImage} />
+  <link rel="canonical" href={absUrl} />
 </>

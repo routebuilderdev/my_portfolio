@@ -21,6 +21,19 @@ const structured = type === 'WebSite'
       jobTitle: siteConfig.author.title,
       email: siteConfig.author.email,
       url: siteConfig.url,
+      sameAs: [
+        siteConfig.social.github,
+        siteConfig.social.linkedin,
+      ].filter(Boolean),
+      knowsAbout: [
+        'React',
+        'TypeScript',
+        'Node.js',
+        'PostgreSQL',
+        'Docker',
+        'CI/CD',
+        'AI-assisted development',
+      ],
     };
 ---
 

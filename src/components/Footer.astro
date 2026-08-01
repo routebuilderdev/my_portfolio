@@ -3,10 +3,15 @@ import { siteConfig } from '../config';
 
 const currentYear = new Date().getFullYear();
 
+const LABELS: Record<string, string> = {
+  gitlab: 'GitLab',
+  linkedin: 'LinkedIn',
+};
+
 const socialLinks = Object.entries(siteConfig.social)
   .filter(([_, url]) => url)
   .map(([platform, url]) => ({
-    platform: platform.charAt(0).toUpperCase() + platform.slice(1),
+    platform: LABELS[platform] ?? platform.charAt(0).toUpperCase() + platform.slice(1),
     url,
   }));
 ---

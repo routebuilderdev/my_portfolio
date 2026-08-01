@@ -5,6 +5,11 @@ import { siteConfig } from '../config';
 import { pagesConfig } from '../pages.config';
 
 const socialLinks = Object.entries(siteConfig.social).filter(([_, url]) => url);
+
+const LABELS: Record<string, string> = {
+  gitlab: 'GitLab',
+  linkedin: 'LinkedIn',
+};
 ---
 
 <BaseLayout>
@@ -26,7 +31,7 @@ const socialLinks = Object.entries(siteConfig.social).filter(([_, url]) => url);
         <div class="contact-social">
           {socialLinks.map(([platform, url]) => (
             <a href={url} target="_blank" rel="noopener noreferrer" class="contact-link">
-              {platform.charAt(0).toUpperCase() + platform.slice(1)}
+              {LABELS[platform] ?? platform.charAt(0).toUpperCase() + platform.slice(1)}
             </a>
           ))}
         </div>

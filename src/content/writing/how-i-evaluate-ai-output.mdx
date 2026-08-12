@@ -1,0 +1,33 @@
+---
+title: "How I Evaluate AI Output"
+description: "AI writes most of my code. What makes it worth shipping is the evaluation loop around it — and that loop is the part nobody sees."
+publishDate: 2026-08-12
+tags:
+  - "AI"
+  - "evaluation"
+  - "testing"
+  - "workflow"
+draft: false
+---
+
+AI writes most of my code. Most people stop reading there — either "that's cheating" or "then what do you even do?" Neither is right. The job is not having AI write code. The job is having a system that measures whether that code deserves to ship. Here's the system.
+
+## Tests are an evaluation harness, not a chore
+
+The naive way to use AI is: prompt, accept, ship. The honest way is: prompt, review, and run the output through something that can prove it's right. For me that something is a test suite — but not the token "I added tests" kind.
+
+On No Scratch Nav, every feature lands with tests written for the behavior I specified — 221 of them now, run by CI/CD on every commit. The pipeline is the judge: if the agent's code breaks a behavior I locked in, the commit is red and it goes back. Nobody at 2am is deciding whether the AI's change was fine.
+
+The strongest version of this is the RAG agent I built in .NET. Its eval harness runs entirely offline: a fake embedder produces token-hash vectors, and the suite verifies retrieval ordering, citation attachment, no-context fallback, chunking overlap, and synonym expansion. No network, no local model — the whole decision path runs in 200 milliseconds. When I changed retrieval behavior I could see exactly what broke, instantly, without asking an LLM to grade an LLM.
+
+## The trust boundary is drawn in the review, not in the prompt
+
+A good prompt gets you 80% of the way. The last 20% is the part where you decide the agent is wrong. I review every diff for logic, security, and complexity — and I've deleted or rewritten plenty of generated output. The evaluation question is never "does it run?" It's "does it hold its claim?"
+
+That's also why my projects document decisions. When I picked a community trust model over algorithmic route scoring for No Scratch Nav, it wasn't because the agent suggested it — it was because scraping map data breaks Google's Terms of Service, and the decision survives audit. A documented reason is an evaluated decision; a vibes-based choice isn't a decision at all.
+
+## Who watches the watcher
+
+The last layer is measurement: feature tests that fail when behavior drifts, CI that refuses merges on red, and a rule that nothing ships that I can't explain line by line. The AI doesn't grade itself, and I don't grade it on vibes. The code grades it — against the spec I wrote before it started.
+
+That's the 2026 version of "show me what you built": the artifacts are cheap now, the judgment is what costs. Any AI can generate an app. The differentiator is the loop that proves what it generated is true.

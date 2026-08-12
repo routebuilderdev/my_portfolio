@@ -5,15 +5,15 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   output: 'static',
   integrations: [mdx(), sitemap()],
-  site: process.env.SITE_URL || 'https://example.com',
+  site: process.env.SITE_URL || 'https://routebuilder.developer.li',
   env: {
     schema: {
-      SITE_URL: envField.string({ context: 'client', access: 'public', default: 'https://example.com' }),
+      SITE_URL: envField.string({ context: 'client', access: 'public', default: 'https://routebuilder.developer.li' }),
       SITE_LANGUAGE: envField.string({ context: 'client', access: 'public', default: 'en' }),
-      SITE_TITLE: envField.string({ context: 'client', access: 'public', default: 'Vibe Coder Portfolio' }),
-      SITE_DESCRIPTION: envField.string({ context: 'client', access: 'public', default: 'Building production apps with AI. Documenting decisions, trade-offs, and outcomes.' }),
+      SITE_TITLE: envField.string({ context: 'client', access: 'public', default: 'Full-Stack Developer — AI-Native Workflow' }),
+      SITE_DESCRIPTION: envField.string({ context: 'client', access: 'public', default: 'Full-stack developer shipping production apps by directing AI agents and verifying every diff.' }),
       SITE_AUTHOR_NAME: envField.string({ context: 'client', access: 'public', default: 'Adelin Dutulescu' }),
-      SITE_AUTHOR_TITLE: envField.string({ context: 'client', access: 'public', default: 'Vibe Coder' }),
+      SITE_AUTHOR_TITLE: envField.string({ context: 'client', access: 'public', default: 'Full-Stack Developer' }),
       SITE_AUTHOR_BIO: envField.string({ context: 'client', access: 'public', default: 'Shipping production-grade applications built entirely with AI assistance. Focused on solving real problems through thoughtful architecture and pragmatic decisions.' }),
       SITE_AUTHOR_EMAIL: envField.string({ context: 'client', access: 'public', default: 'routebuilderdev@gmail.com' }),
       SITE_AUTHOR_LOCATION: envField.string({ context: 'client', access: 'public', default: '' }),

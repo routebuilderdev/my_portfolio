@@ -4,7 +4,7 @@ role: "Creator & Developer"
 year: 2026
 duration: "Ongoing"
 outcomeSummary: "Built an open-source European job aggregator with an opinionated scoring engine — eight hard gates, verified net pay, real micro-town rent, work-life-balance penalties"
-overview: "An open-source, self-hosted European job aggregator that does not compete on volume. Every job in the feed is reduced to one number — monthly savings — computed from verified net pay, real micro-town rent, and baseline living costs, then gated by eight hard personal filters and a work-life-balance score. Built entirely with AI assistance."
+overview: "An open-source, self-hosted European job aggregator that does not compete on volume. Every job in the feed is reduced to one number — monthly savings — computed from verified net pay, real micro-town rent, and baseline living costs, then gated by eight hard personal filters and a work-life-balance score. Built documentation-first: a 4,000-line developer-ready spec before code, AI agents as implementers, verification as the product rule."
 problem: "Generic job boards answer 'what jobs exist?'. A professional driver relocating to Europe asks a different question: 'how much do I save per month, and will I hate my life?' Nothing on the market answers that — aggregators compete on volume, not on trusted, opinionated decision support."
 constraints:
   - "Must answer one question: 'How much do I save per month, and will I hate my life?'"
@@ -12,7 +12,7 @@ constraints:
   - "No paid service in the core stack — every paid tool named and replaced with an OSS alternative"
   - "Must work for a specific locked default persona (European coach/bus driver) plus data-driven alternative personas"
   - "Open source (MIT), self-hosted"
-  - "Built entirely with AI assistance"
+  - "Spec-first process: I write the build spec and review every diff; AI agents implement"
 approach: "Designed the data pipeline, schema, and API before writing code — the complete developer-ready build spec with real SQL, real interfaces, and golden test fixtures came first. Built a FastAPI backend with SQLAlchemy 2.0 async, Alembic migrations, and an APScheduler worker running scrapers with a €0 anti-bot strategy and JSON-LD extraction. The frontend is a React 18 + Vite + TypeScript + Tailwind single-page app. A persona-aware Scoring Engine ranks every job through eight hard gates to a Tier A/B/C rating, with an honesty rule that refuses to claim a confidence it cannot prove."
 keyDecisions:
   - decision: "Opinionated scoring engine over pure aggregation"

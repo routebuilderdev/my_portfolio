@@ -6,7 +6,9 @@ import { siteConfig } from '../../config';
 
 export async function getStaticPaths() {
   const writing = await getCollection('writing');
-  return writing.map((post) => ({
+  return writing
+    .filter((post) => !post.data.draft)
+    .map((post) => ({
     params: { slug: post.id },
     props: { post },
   }));

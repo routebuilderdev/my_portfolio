@@ -16,7 +16,7 @@ AI writes most of my code. Most people stop reading there — either "that's che
 
 The naive way to use AI is: prompt, accept, ship. The honest way is: prompt, review, and run the output through something that can prove it's right. For me that something is a test suite — but not the token "I added tests" kind.
 
-On No Scratch Nav, every feature lands with tests written for the behavior I specified — 221 of them now, run by CI/CD on every commit. The pipeline is the judge: if the agent's code breaks a behavior I locked in, the commit is red and it goes back. Nobody at 2am is deciding whether the AI's change was fine.
+On No Scratch Nav, every feature lands with tests written for the behavior I specified — 313 of them now, run by CI/CD on every commit. The pipeline is the judge: if the agent's code breaks a behavior I locked in, the commit is red and it goes back. Nobody at 2am is deciding whether the AI's change was fine.
 
 The strongest version of this is the RAG agent I built in .NET. Its eval harness runs entirely offline: a fake embedder produces token-hash vectors, and the suite verifies retrieval ordering, citation attachment, no-context fallback, chunking overlap, and synonym expansion. No network, no local model — the whole decision path runs in 200 milliseconds. When I changed retrieval behavior I could see exactly what broke, instantly, without asking an LLM to grade an LLM.
 

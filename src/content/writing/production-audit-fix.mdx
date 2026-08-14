@@ -1,0 +1,58 @@
+---
+title: "I Shipped an App with 5 Critical Security Bugs. Here's the Audit and the Fix."
+description: "My flagship app claimed 'production-grade' and had 313 passing tests. It also had a known-password backdoor and a default JWT secret in production. This is what I found when I finally audited it instead of adding features — and how I fixed it."
+publishDate: 2026-08-14
+tags:
+  - "security"
+  - "audit"
+  - "testing"
+  - "production"
+  - "no-scratch-nav"
+draft: false
+---
+
+## What I built, and what I believed
+
+No Scratch Nav is a production platform for coach and bus drivers: they share routes they've driven safely, request routes they need, and upvote the ones that work. Live at noscratchnav.shareroute.org, 313 tests passing (222 backend, 91 frontend), CI/CD on every push, deployed to a VPS I operate myself.
+
+And I believed it was production-grade. The homepage said so. The tests said so.
+
+## What I found when I actually audited
+
+Instead of adding the next feature, I audited the codebase with the specific question: *can I prove every claim I make about this app?* The answer was no. Twenty-five findings — and five of them were critical, live in production:
+
+1. **A known-password backdoor.** The seed script created `test@example.com` / `password123` in production, and the entrypoint script masked its own failures with `|| echo`. Anyone who read the repo could log in.
+2. **A default JWT secret.** If `JWT_SECRET` was unset, the app booted with a hardcoded default — meaning anyone could forge auth tokens. It also crashed on boot if the secret *wasn't* a default (the validation itself was broken).
+3. **No native refresh token flow.** The refresh token only lived in a browser cookie — a React Native client couldn't rotate it, and there was no reuse revocation, so a stolen token was a permanent session.
+4. **Permanently stale caches.** Upvotes updated the database but not the cached route lists — the site literally showed wrong data until the cache expired.
+5. **The Telegram bot wasn't deployed.** The code was in the repo. The production compose file never included the service.
+
+Plus a cluster of smaller ones: a rate limiter that throttled normal browsing, a CSRF race in the email verification flow, a dead analytics metric that pretended to track page views, a `tls.checkServerIdentity` typo that disabled a TLS check, and a production CSRF setup that silently depended on Redis being up.
+
+## What I learned
+
+- **Tests passing ≠ secure.** My suite tested that features worked. Nothing tested that the app was safe. Both matter, and they're different jobs.
+- **"I verify every diff" needs to be literal.** Reviewing what the AI agent wrote is not the same as verifying the *deployed system*. The audit that found these bugs read the production path end to end — env loading, seed scripts, entrypoints, cache keys.
+- **Default secrets are a design failure, not an ops accident.** If the app runs with a fallback secret, it *will* run with it in production one day. Fail fast at boot instead.
+- **A public repo is an attack surface.** My repo was public. Anyone could read the default credentials from it.
+
+## The fixes, and the gate that keeps them fixed
+
+Every finding got a fix and a test:
+
+- Seed users: test user creation is skipped in production unless explicitly enabled; admin password is required at boot or the container fails.
+- JWT secret: both known defaults are rejected at boot; `.env.example` ships a `CHANGE_ME_` placeholder.
+- Refresh tokens: native rotation with reuse detection — a replayed token revokes the whole session; migration + tests.
+- Caches: a single `invalidateRoutesCache()` clears every affected key, called from every mutation.
+- Telegram bot: added to the production compose file.
+- Plus: POST-only rate limiting, a CSRF race fixed, the dead metric deleted, the TLS check corrected.
+
+Then I hardened the pipeline so it can't regress: the CI now runs a11y checks and dependency audits on top of the 313 tests, and the deployment job has been through two production failures that became permanent fixes (an SSH host-key fingerprint mismatch, a docker-compose binary that no longer existed on the server).
+
+I also deleted the prod accounts those defaults created — including 7 leftover accounts from the security testing itself. Cleanup is part of the fix.
+
+## The point
+
+The site now says what's true: 313 tests, CI/CD, audited and fixed. The audit doc that started it lives in the repo, and the numbers on the homepage are each backed by something clickable. The scariest week of the project was the best one for the product.
+
+A junior who audits his own production app, finds an auth bypass, and fixes it — that's the engineer I'm trying to be. This is the receipts.

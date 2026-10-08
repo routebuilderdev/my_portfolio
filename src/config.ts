@@ -6,7 +6,7 @@ export const siteConfig = {
   url: getEnv('SITE_URL', 'https://routebuilder.developer.li'),
   language: getEnv('SITE_LANGUAGE', 'en'),
   title: getEnv('SITE_TITLE', 'Full-Stack Developer — AI-Native Workflow'),
-  description: getEnv('SITE_DESCRIPTION', 'Full-stack developer shipping production apps by directing AI agents and verifying every diff. Documented decisions, trade-offs, and outcomes.'),
+  description: getEnv('SITE_DESCRIPTION', 'Full-stack developer shipping production apps owned end to end: architecture, review, and verification with tests and CI. Documented decisions, trade-offs, and outcomes.'),
   author: {
     name: getEnv('SITE_AUTHOR_NAME', 'routebuilderdev'),
     title: getEnv('SITE_AUTHOR_TITLE', 'Full-Stack Developer'),

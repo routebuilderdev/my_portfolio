@@ -3,17 +3,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SEO from '../components/SEO.astro';
 import StructuredData from '../components/StructuredData.astro';
 import ForwardLink from '../components/ForwardLink.astro';
-import Testimonials from '../components/Testimonials.astro';
 import { getCollection } from 'astro:content';
 import { siteConfig } from '../config';
+import { openSourceContributions } from '../data/openSource';
 
 const allProjects = await getCollection('projects');
 const featuredProjects = allProjects
   .filter(p => p.data.featured === true)
   .sort((a, b) => (a.data.order || 999) - (b.data.order || 999))
-  .slice(0, 2);
+  .slice(0, 3);
 
-const caseSnapshots = featuredProjects.slice(0, 3);
+const caseSnapshots = featuredProjects;
+const openSource = openSourceContributions[0];
 
 const allDecisions = await getCollection('decisions');
 const recentDecisions = allDecisions
@@ -35,10 +36,10 @@ const recentDecisions = allDecisions
             <span class="hero-title-emphasis">Every build documented — decisions, trade-offs, outcomes.</span>
           </h1>
           <p class="hero-sub">
-            {siteConfig.author.name} — {siteConfig.author.title}. Python, TypeScript, React, Node.js, PostgreSQL.
+            {siteConfig.author.name} — {siteConfig.author.title}. TypeScript, Python, Rust, C#/.NET, React, Node.js, PostgreSQL.
           </p>
           <p class="hero-meta">
-            Case studies of real, deployed applications — not screenshots.
+            Case studies of real applications and merged open-source work — not screenshots.
           </p>
           <div class="hero-cta">
             <a href="/projects" class="btn-primary">Explore Case Studies</a>
@@ -61,12 +62,21 @@ const recentDecisions = allDecisions
 
     <section class="introduction">
 <p>
-          I'm {siteConfig.author.name}, a {siteConfig.author.title.toLowerCase()}. I went from my first line of code to a live production platform for coach and bus drivers in under a year — three shipped apps, 313 tests, CI/CD on everything. I build with coding agents and own every diff that ships — I set the architecture, review each change, and verify with tests and CI before anything goes live.
+          I'm {siteConfig.author.name}, a {siteConfig.author.title.toLowerCase()}. I went from my first line of code to a live production platform for coach and bus drivers in under a year — one app in production, five documented builds, 70 merged pull requests into DefiLlama's open-source data tooling, and 418 automated tests gating every deploy. I build with coding agents and own every diff that ships — I set the architecture, review each change, and verify with tests and CI before anything goes live.
         </p>
         <p>
           I document every major decision because great engineers don't just build things — they explain why.
         </p>
       <ForwardLink href="/journey" text="Read my journey" variant="muted" />
+    </section>
+
+    <section class="now">
+      <span class="now-label">Currently · November 2026</span>
+      <p>
+        Maintaining No Scratch Nav in production · contributing adapter fixes to DefiLlama ·
+        building <a href="/projects/ship-confidence">Ship Confidence</a> and
+        <a href="/projects/correlation">Correlation</a>. Open to full-stack and AI-platform roles in the EU and UK.
+      </p>
     </section>
 
     <section class="recent-decisions">
@@ -93,6 +103,37 @@ const recentDecisions = allDecisions
       )}
     </section>
 
+    <section class="open-source">
+      <div class="section-header">
+        <h2>Open Source</h2>
+        <ForwardLink href="/open-source" text="All contributions" variant="muted" />
+      </div>
+      <p class="os-summary">{openSource.summary}</p>
+      <div class="os-stats">
+        {openSource.stats.map((stat) => (
+          <div class="os-stat">
+            <span class="os-stat-value">{stat.value}</span>
+            <span class="os-stat-label">{stat.label}</span>
+          </div>
+        ))}
+      </div>
+      <div class="os-themes">
+        {openSource.themes.map((theme) => (
+          <article class="os-theme">
+            <h3>{theme.title}</h3>
+            <p>{theme.body}</p>
+            <ul class="os-prs">
+              {theme.prs.slice(0, 2).map((pr) => (
+                <li>
+                  <a href={pr.href} target="_blank" rel="noopener noreferrer">{pr.title}</a>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </section>
+
     <section class="skills">
       <div class="section-header">
         <h2>Skills</h2>
@@ -100,19 +141,19 @@ const recentDecisions = allDecisions
       <div class="skills-grid">
         <div class="skill-group">
           <h3>AI / LLM Engineering</h3>
-          <p>Retrieval-Augmented Generation, embeddings & vector search (Qdrant/ChromaDB), Ollama, structured outputs, prompt engineering, eval harnesses with deterministic offline tests</p>
+          <p>Retrieval-Augmented Generation, embeddings & vector search (Qdrant/ChromaDB), MCP tool design, Ollama, structured outputs, eval harnesses with deterministic offline tests</p>
         </div>
         <div class="skill-group">
           <h3>Frontend</h3>
           <p>React.js, TypeScript, Material UI, Progressive Web Apps, Service Workers</p>
         </div>
         <div class="skill-group">
-          <h3>Backend</h3>
-          <p>Python, Node.js, Express, PostgreSQL, Redis, REST API Design</p>
+          <h3>Backend & Data</h3>
+          <p>Python, Node.js, Express, C#/.NET (ASP.NET Core), PostgreSQL, Redis, REST API design, data pipelines</p>
         </div>
         <div class="skill-group">
-          <h3>DevOps</h3>
-          <p>Docker, Nginx, CI/CD, Linux</p>
+          <h3>Platform & Contracts</h3>
+          <p>Rust, NEAR smart contracts, Docker, Nginx, Linux, GitHub Actions CI/CD, Atlassian Forge</p>
         </div>
       </div>
     </section>
@@ -158,6 +199,23 @@ const recentDecisions = allDecisions
   .introduction { max-width: 600px; margin-bottom: 5rem; font-size: 1.125rem; line-height: 1.7; color: var(--color-text-secondary); }
   .introduction p { margin-bottom: 1rem; }
   .introduction p:first-child { color: var(--color-text); }
+  .now { max-width: 680px; padding: 1.25rem 1.5rem; margin-bottom: 5rem; background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: 8px; }
+  .now-label { display: block; font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-accent); margin-bottom: 0.5rem; }
+  .now p { font-size: 0.9375rem; line-height: 1.7; color: var(--color-text-secondary); }
+  .now a { color: var(--color-text); text-decoration: underline; text-decoration-color: var(--color-border); text-underline-offset: 3px; }
+  .now a:hover { color: var(--color-accent); }
+  .open-source { margin-bottom: 5rem; }
+  .os-summary { font-size: 1.0625rem; line-height: 1.8; color: var(--color-text-secondary); max-width: 720px; margin-bottom: 1.75rem; }
+  .os-stats { display: flex; flex-wrap: wrap; gap: 3rem; padding: 1.25rem 0; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); margin-bottom: 2rem; }
+  .os-stat { display: flex; flex-direction: column; gap: 0.25rem; }
+  .os-stat-value { font-size: 1.5rem; font-weight: 600; color: var(--color-text); }
+  .os-stat-label { font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); }
+  .os-themes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+  .os-theme h3 { font-size: 0.9375rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--color-text); }
+  .os-theme p { font-size: 0.875rem; line-height: 1.7; color: var(--color-text-secondary); margin-bottom: 0.75rem; }
+  .os-prs { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.375rem; }
+  .os-prs a { font-size: 0.8125rem; color: var(--color-text-muted); text-decoration: none; line-height: 1.5; }
+  .os-prs a:hover { color: var(--color-accent); }
   .recent-decisions { margin-bottom: 5rem; }
   .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 2rem; }
   .section-header h2 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.01em; }
@@ -192,6 +250,7 @@ const recentDecisions = allDecisions
     .introduction { font-size: 1rem; }
     .section-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
     .decision-title { font-size: 1rem; }
+    .os-stats { gap: 2rem; }
     .cta-buttons { flex-direction: column; }
     .cta-buttons .btn-primary, .cta-buttons .btn-secondary { width: 100%; }
   }

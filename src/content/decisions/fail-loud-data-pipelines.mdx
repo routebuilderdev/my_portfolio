@@ -1,0 +1,34 @@
+---
+title: "Fail Loudly in Data Pipelines, Never Silently"
+date: 2026-11-01
+context: "While contributing adapters to DefiLlama, the same bug kept appearing in different costumes: a vault query throws, a .catch() swallows it, and the adapter returns whatever it had. The dashboard then shows a lower TVL or a smaller reserve figure with no indication that a read failed. A number that is quietly wrong is worse than an error, because nobody investigates a number."
+decision: "When an upstream read fails, the adapter errors or retries — it never falls through to a zero, an empty array, or a partial total that looks like real data."
+alternatives:
+  - option: "Silent fallback to zero or the last known value"
+    pros:
+      - "The adapter never crashes and every protocol keeps a number on the board"
+      - "No maintainer time spent investigating transient failures"
+    cons:
+      - "Under-reported totals are indistinguishable from real declines"
+      - "The failure is invisible until someone reconciles the number by hand"
+  - option: "Optional chaining and defensive defaults everywhere"
+    pros:
+      - "Fewer thrown errors in production"
+      - "Handles partially-formed API responses without special cases"
+    cons:
+      - "Turns a missing field into a valid-looking value"
+      - "Hides schema drift, which is exactly what you need to notice"
+  - option: "Retry at the boundary, then propagate the error"
+    pros:
+      - "Transient timeouts are absorbed without corrupting the output"
+      - "A persistent failure surfaces with a stack trace and the adapter name"
+    cons:
+      - "Slower failures on genuinely broken endpoints"
+      - "Needs a timeout on every direct call so retries cannot hang the run"
+reasoning: "In a data pipeline, the output is a claim. Swallowing an error makes the claim false while keeping it plausible, and plausible-but-false is the most expensive state a public dataset can be in — nobody audits a number that looks reasonable. Retrying absorbs the failures worth absorbing; propagating the rest is what turns a silent under-report into a visible incident. The same rule applies to my own projects: fail at boot on a default secret, fail CI on a red test, never ship a fallback that pretends to be data."
+tags:
+  - "reliability"
+  - "data"
+  - "open-source"
+  - "error-handling"
+---

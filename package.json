@@ -1,5 +1,5 @@
 {
-  "name": "vibe-coder-portfolio",
+  "name": "routebuilder-portfolio",
   "type": "module",
   "version": "1.0.0",
   "description": "A case-study-first portfolio — built with AI, documented like engineering",
@@ -7,6 +7,8 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
+    "check": "astro check",
+    "verify": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -19,5 +21,8 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.0",
     "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

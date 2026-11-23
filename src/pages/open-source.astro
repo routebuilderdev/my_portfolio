@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SEO from '../components/SEO.astro';
+import PageStats from '../components/PageStats.astro';
+import ForwardLink from '../components/ForwardLink.astro';
+import { openSourceContributions } from '../data/openSource';
+import { siteConfig } from '../config';
+
+const primary = openSourceContributions[0];
+const mergedTotal = primary.stats.find((stat) => stat.label === 'Merged PRs')?.value ?? '';
+---
+
+<BaseLayout>
+  <SEO
+    slot="head"
+    title={`Open Source - ${siteConfig.title}`}
+    description="Merged contributions to open-source projects I do not own — 70 pull requests into DefiLlama's adapter and data tooling repositories."
+    type="website"
+  />
+  <main class="page-container">
+    <header class="page-header">
+      <h1 class="page-title">Open Source</h1>
+      <p class="page-intro">
+        Work in codebases I don't own, reviewed by maintainers who owe me nothing. Every entry links
+        to the merged pull requests, because a contribution you can't open isn't evidence.
+      </p>
+      <PageStats text={`${mergedTotal} merged pull requests · ${primary.repos.length} repositories · ${primary.period}`} />
+    </header>
+
+    {openSourceContributions.map((contribution) => (
+      <article class="contribution">
+        <div class="contribution-head">
+          <div>
+            <h2 class="contribution-project">{contribution.project}</h2>
+            <p class="contribution-role">{contribution.role}</p>
+          </div>
+          <span class="contribution-period">{contribution.period}</span>
+        </div>
+
+        <p class="contribution-summary">{contribution.summary}</p>
+
+        <div class="contribution-stats">
+          {contribution.stats.map((stat) => (
+            <div class="stat">
+              <span class="stat-value">{stat.value}</span>
+              <span class="stat-label">{stat.label}</span>
+            </div>
+          ))}
+        </div>
+
+        <div class="contribution-repos">
+          {contribution.repos.map((repo) => (
+            <a href={repo.href} target="_blank" rel="noopener noreferrer" class="repo-chip">
+              <span class="repo-name">{repo.name}</span>
+              <span class="repo-count">{repo.merged}</span>
+            </a>
+          ))}
+        </div>
+
+        <div class="themes">
+          {contribution.themes.map((theme) => (
+            <section class="theme">
+              <h3 class="theme-title">{theme.title}</h3>
+              <p class="theme-body">{theme.body}</p>
+              <ul class="pr-list">
+                {theme.prs.map((pr) => (
+                  <li>
+                    <a href={pr.href} target="_blank" rel="noopener noreferrer" class="pr-link">
+                      {pr.title}
+                      <span class="pr-arrow" aria-hidden="true">&rarr;</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
+        </div>
+
+        <section class="practices">
+          <h3 class="theme-title">How I work in someone else's codebase</h3>
+          <ul class="practice-list">
+            {contribution.practices.map((practice) => <li>{practice}</li>)}
+          </ul>
+        </section>
+
+        <ForwardLink href={contribution.profileUrl} text="Pull requests on GitHub" variant="muted" />
+      </article>
+    ))}
+  </main>
+</BaseLayout>
+
+<style>
+  .contribution { padding-bottom: var(--space-3xl); margin-bottom: var(--space-3xl); border-bottom: 1px solid var(--color-border); }
+  .contribution:last-of-type { border-bottom: none; }
+  .contribution-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-md); margin-bottom: var(--space-md); }
+  .contribution-project { font-size: var(--font-size-2xl); font-weight: var(--font-weight-semibold); letter-spacing: -0.01em; }
+  .contribution-role { font-size: var(--font-size-sm); color: var(--color-text-muted); margin-top: var(--space-xs); }
+  .contribution-period { font-size: var(--font-size-sm); color: var(--color-text-muted); white-space: nowrap; }
+  .contribution-summary { font-size: var(--font-size-lg); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); max-width: 720px; margin-bottom: var(--space-xl); }
+  .contribution-stats { display: flex; flex-wrap: wrap; gap: var(--space-2xl); padding: var(--space-lg) 0; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); margin-bottom: var(--space-xl); }
+  .stat { display: flex; flex-direction: column; gap: var(--space-xs); }
+  .stat-value { font-size: var(--font-size-2xl); font-weight: var(--font-weight-semibold); color: var(--color-text); }
+  .stat-label { font-size: var(--font-size-xs); text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-text-muted); }
+  .contribution-repos { display: flex; flex-wrap: wrap; gap: var(--space-sm); margin-bottom: var(--space-2xl); }
+  .repo-chip { display: inline-flex; align-items: baseline; gap: var(--space-sm); padding: var(--space-sm) var(--space-md); background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: var(--border-radius-sm); text-decoration: none; transition: border-color var(--transition-base); }
+  .repo-chip:hover { border-color: var(--color-text-muted); }
+  .repo-name { font-size: var(--font-size-sm); color: var(--color-text); }
+  .repo-count { font-size: var(--font-size-xs); color: var(--color-text-muted); }
+  .themes { display: flex; flex-direction: column; gap: var(--space-2xl); margin-bottom: var(--space-2xl); }
+  .theme { padding-left: var(--space-lg); border-left: 2px solid var(--color-border); }
+  .theme-title { font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); margin-bottom: var(--space-sm); }
+  .theme-body { font-size: var(--font-size-base); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); margin-bottom: var(--space-md); max-width: 720px; }
+  .pr-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-sm); }
+  .pr-link { display: inline-flex; align-items: baseline; gap: var(--space-sm); font-size: var(--font-size-sm); color: var(--color-text-secondary); text-decoration: none; transition: color var(--transition-base); }
+  .pr-link:hover { color: var(--color-accent); }
+  .pr-arrow { color: var(--color-text-muted); transition: transform var(--transition-base); }
+  .pr-link:hover .pr-arrow { transform: translateX(3px); }
+  .practices { margin-bottom: var(--space-xl); }
+  .practice-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-sm); }
+  .practice-list li { position: relative; padding-left: var(--space-lg); font-size: var(--font-size-sm); line-height: var(--line-height-relaxed); color: var(--color-text-secondary); }
+  .practice-list li::before { content: ''; position: absolute; left: 0; top: 0.6em; width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); opacity: 0.7; }
+  @media (max-width: 768px) {
+    .contribution-head { flex-direction: column; gap: var(--space-xs); }
+    .contribution-stats { gap: var(--space-xl); }
+    .theme { padding-left: var(--space-md); }
+  }
+</style>

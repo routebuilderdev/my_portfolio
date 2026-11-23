@@ -5,7 +5,7 @@ export const pagesConfig = {
     title: `Projects - ${siteConfig.title}`,
     description: 'Case studies of applications I have built with AI.',
     heading: 'Case Studies',
-    intro: 'Three production-shaped applications built with AI. Each documents the problem, the approach, the key decisions, and what shipped.',
+    intro: 'Production applications and hackathon builds, documented end to end. Each case study covers the problem, the approach, the decisions that mattered, and what actually shipped.',
   },
   decisions: {
     title: `Decisions - ${siteConfig.title}`,

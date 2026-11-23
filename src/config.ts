@@ -17,12 +17,13 @@ export const siteConfig = {
   social: {
     github: getEnv('SOCIAL_GITHUB', 'https://github.com/routebuilderdev'),
     linkedin: getEnv('SOCIAL_LINKEDIN', 'https://www.linkedin.com/in/route-builder'),
-    twitter: getEnv('SOCIAL_TWITTER', ''),
+    twitter: getEnv('SOCIAL_TWITTER', 'https://x.com/routebuilderdev'),
     mastodon: getEnv('SOCIAL_MASTODON', ''),
     bluesky: getEnv('SOCIAL_BLUESKY', ''),
   },
   nav: [
     { label: 'Projects', href: '/projects' },
+    { label: 'Open Source', href: '/open-source' },
     { label: 'Decisions', href: '/decisions' },
     { label: 'Journey', href: '/journey' },
     { label: 'Writing', href: '/writing' },

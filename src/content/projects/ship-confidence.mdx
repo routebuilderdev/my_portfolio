@@ -1,0 +1,66 @@
+---
+title: "Ship Confidence"
+role: "Creator & Developer"
+year: 2026
+duration: "Codegeist 2026 build"
+outcomeSummary: "A release gate for Jira: six read-only MCP tools and a Jira project page that answer 'is this version safe to ship?' with a 0–100 score, the blockers behind it, and an explicit account of what could not be read"
+overview: "Ship Confidence answers one question a release manager actually asks: is 2.4.0 safe to ship? Ask it in Rovo chat, Claude, or any MCP client and you get a verdict, the reasons, and the gaps in what could be read. The same logic also renders as a Jira project page, so the answer exists for people who never open a chat client. One domain layer, two surfaces — six tools exposed through the Atlassian MCP server, and a page inside the project."
+problem: "Release readiness is not stored anywhere. It is inferred from a version's work items, their statuses, the pull requests and deployments attached to them, and whether a blocker is still open — data spread across the Teamwork Graph. An AI client can only answer the question if it has tools, and those tools only work if the permissions and the platform's failure modes are handled deliberately."
+constraints:
+  - "Forge platform: 55 seconds per action invocation, 25 seconds default function budget"
+  - "Only four read:graph scopes — a test fails if anything broader appears"
+  - "rovo:action inputs accept only strings, integers, numbers and booleans, 5 MB payload"
+  - "Tool calls run as the invoking user, so permissions are the security boundary"
+  - "A missing scope does not error — it returns an empty result"
+approach: "Designed the domain first: pure scoring, risk factors and comparison logic with no SDK, no fetch and no clock, so the rules are testable without a Forge runtime. Six thin action adapters sit on top, each ~25 lines, and a single port wraps the Teamwork Graph client with a 12-second timeout per query. Because a denied scope is indistinguishable from an empty project by response alone, a separate access probe classifies the ambiguity and the result envelope carries a coverage caveat instead of silently reporting zero."
+keyDecisions:
+  - decision: "One domain layer, two surfaces"
+    reasoning: "The verdict has to be identical whether it is read in a chat client or on a Jira page. Keeping scoring, risk factors, comparison and the page's copy in pure modules — with the Forge runtime behind a port — means both surfaces call the same functions, and 73 tests run in milliseconds without mocking the platform."
+    alternatives:
+      - "Separate implementations for MCP tools and the Jira page"
+      - "Server-side service that both surfaces call over HTTP"
+  - decision: "Read-only tools, bounded blast radius"
+    reasoning: "A release-readiness tool has no business writing to a customer's Jira. Four read:graph scopes and six read-only tools cover the whole question, and a test asserts the manifest never gains a broader scope. The cost is that the tool cannot annotate or transition anything — a trade I would make again for an app installed by a site admin."
+    alternatives:
+      - "Write access to post the verdict as a comment or transition the version"
+      - "Broad scopes with runtime filtering in code"
+  - decision: "Treat empty as unknown, not zero"
+    reasoning: "On this platform a missing scope returns an empty result rather than an error, which is the most dangerous behaviour for an app whose answer is 'is this safe?'. A coverage model plus an access probe separates 'nothing is wrong' from 'I could not see it', and the verdict says which one it is."
+    alternatives:
+      - "Assume an empty result means no blockers"
+      - "Fail the whole call when any query returns nothing"
+  - decision: "The score explains itself or it is useless"
+    reasoning: "A number without its risk factors is a vibe with a decimal point. Every verdict ships with ranked factors, the blocker behind them with owner and link, and the coverage caveat — so the release manager can disagree with the score instead of trusting it."
+    alternatives:
+      - "Score plus a one-line summary"
+      - "No score, blockers only"
+techStack:
+  - "TypeScript"
+  - "Atlassian Forge"
+  - "Teamwork Graph"
+  - "MCP"
+  - "Jira REST API"
+  - "Vitest"
+impact:
+  metrics:
+    - label: "MCP tools"
+      value: "6, read-only"
+    - label: "Tests"
+      value: "73 across 7 files"
+    - label: "Demo"
+      value: "91-second narrated walkthrough"
+  qualitative: "A working Forge app installable on a Jira Cloud site: score a version, list open blockers with owners and links, explain a blocker through its pull requests and deployments, draft release notes from completed work, and compare two releases factor by factor. The demo shows a version scored 59/100 and marked do-not-ship with the blocker named, then the same answer arriving in a chat client."
+learnings:
+  - "On this platform, 'no data' and 'no permission' look identical — the coverage model, not the scoring, is the safety feature"
+  - "A port around the SDK is what makes platform code testable in milliseconds"
+  - "Scope discipline is easier to enforce with a test than with a code review"
+  - "An AI tool's answer is only as good as its account of what it could not see"
+featured: true
+status: completed
+order: 3
+repo: "https://github.com/routebuilderdev/ship-confidence"
+---
+
+## What I'd change now
+
+The scoring rubric is deliberately small — a handful of weighted factors rather than a model of every way a release can fail — because a gate nobody can explain gets ignored. The next version should let a team weight the factors it actually gets burned by, and it should surface historical accuracy: when a previous verdict said do-not-ship, what happened next. Until then, the value is in the blocker being named with an owner and a link, which is already the part release managers use.

@@ -28,6 +28,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Type check
+        run: npm run check
+
       - name: Build site
         run: npm run build
 
@@ -42,3 +45,19 @@ jobs:
         run: |
           rsync -az --delete -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no" ./dist/ \
             "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_TARGET }}"
+
+      - name: Verify the deployed site responds
+        run: |
+          for attempt in $(seq 1 10); do
+            status=$(curl -s -o /dev/null -w '%{http_code}' "$SITE_URL/")
+            if [ "$status" = "200" ]; then
+              echo "$SITE_URL returned 200"
+              exit 0
+            fi
+            echo "attempt $attempt: got $status"
+            sleep 3
+          done
+          echo "$SITE_URL did not return 200 after deploy"
+          exit 1
+        env:
+          SITE_URL: https://routebuilder.developer.li

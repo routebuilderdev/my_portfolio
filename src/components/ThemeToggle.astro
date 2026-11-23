@@ -61,13 +61,15 @@
     return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
   };
 
-  const setTheme = (theme) => {
+  const setTheme = (theme: 'light' | 'dark') => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   };
 
   document.addEventListener('click', (e) => {
-    const toggle = e.target.closest('.theme-toggle');
+    const target = e.target;
+    if (!(target instanceof Element)) return;
+    const toggle = target.closest('.theme-toggle');
     if (toggle) {
       const current = document.documentElement.getAttribute('data-theme');
       setTheme(current === 'dark' ? 'light' : 'dark');

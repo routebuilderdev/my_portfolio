@@ -1,0 +1,37 @@
+---
+title: "Give an AI Tool Read Access Before Write Access"
+date: 2026-11-16
+context: "Ship Confidence answers 'is this version safe to ship?' inside Jira, through six tools exposed over the Atlassian MCP server. The platform offers broader scopes and write paths, and an obvious next feature is letting the app comment the verdict on the version or transition it. I had to decide how much authority a tool that reports on releases should hold."
+decision: "Shipped six read-only tools on four read:graph scopes, with a test that fails if any broader scope appears in the manifest."
+alternatives:
+  - option: "Full write access to post the verdict and transition the version"
+    pros:
+      - "The verdict appears where the release manager already works"
+      - "Could block a release automatically instead of only recommending it"
+    cons:
+      - "A scoring bug now mutates a customer's release process"
+      - "Site-admin install becomes a much harder conversation"
+      - "Every write path needs its own audit and rollback story"
+  - option: "Broad scopes with filtering in application code"
+    pros:
+      - "One permission grant covers features added later"
+      - "Simpler manifest"
+    cons:
+      - "The permission boundary becomes code I wrote, not the platform's"
+      - "A missing scope returns empty rather than an error, so the failure is silent"
+  - option: "Read-only tools plus a human action outside the app"
+    pros:
+      - "The blast radius of a wrong verdict is a wrong sentence, not a changed release"
+      - "The verdict stays advisory, which matches how release decisions are actually made"
+    cons:
+      - "One extra copy-paste for the user"
+      - "No automatic enforcement of the gate"
+reasoning: "A tool that is wrong about a release should be wrong on a screen, not in the release. Read-only tools make the worst case a misleading verdict that a human can argue with; write access makes the worst case an automated change to someone else's delivery pipeline. The permission boundary also belongs to the platform, not to my filtering code — a scope I don't hold cannot be misused by a bug I ship. The cost is real: the app cannot enforce its own recommendation. That trade is correct for a first version installed by a site admin on a production Jira site."
+tags:
+  - "mcp"
+  - "security"
+  - "atlassian"
+  - "ai-tooling"
+relatedProjects:
+  - "ship-confidence"
+---

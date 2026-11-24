@@ -1,0 +1,78 @@
+---
+title: "Fine Print"
+role: "Creator & Developer"
+year: 2026
+duration: "#BuildHybridAI 2026 entry"
+outcomeSummary: "An official letter reader that runs on your device: Gemini Nano extracts the deadline and actions in Chrome, the cloud is used only for fields the on-device samples disagree on, and the app shows the exact 579 characters that left the machine"
+overview: "Fine Print takes the letter people are afraid of — an insurance denial, a lease addendum, a benefit notice, a tax bill — and returns what it is, the single most urgent deadline, up to three concrete actions, and the references to quote. The reading happens on-device with Gemini Nano in Chrome. Every field carries a confidence badge, and a receipt shows what left the machine: zero characters when the device settled everything, or the redacted payload and its character count when it did not."
+problem: "These letters are structured documents pretending to be prose. They always carry a deadline, and the people who most need help with them are the least able to paste them into a cloud chatbot — the letter contains their name, address, policy number, income, or diagnosis. The advice exists; a safe place to get it does not. The design question is not which model reads best, it is what may leave the device, how to prove what did, and how to make the uncertainty visible to the person deciding whether to trust the answer."
+constraints:
+  - "Chrome desktop 139+ with the on-device model installed — ~22 GB free disk for a ~2.5 GB model, no Android or iOS"
+  - "The Chrome Prompt API exposes no token logprobs, so confidence has to be measured another way"
+  - "Free-tier cloud limits of roughly 20 requests per day on Flash make 'escalate often' unworkable"
+  - "Client-side only: no server, no login, no stored letters, no billing account"
+  - "A missing or denied capability must be visible, never answered with a fabricated result"
+approach: "Constrained decoding first: one response schema enforces the extraction shape, so a malformed answer is not possible. Confidence comes from agreement — read the same letter three times on-device, compare the fields, and treat disagreement as the signal that a field deserves a second look. Before anything is sent, one focused on-device re-read asks about that single field and keeps the answer only if the model can quote the supporting sentence word for word. If it can, nothing leaves the machine. If it cannot, emails, phone numbers, IBANs, card-like numbers, IDs and URLs are stripped deterministically, the redacted payload is shown, and Gemini gets a second read. The checklist is verified item by item against the letter, because agreement judges a field, not the individual actions inside it."
+keyDecisions:
+  - decision: "The device is the privacy boundary and the confidence oracle"
+    reasoning: "The obvious hybrid design is 'use the cloud when the device fails', but the device cannot tell you it failed. Sampling the same extraction several times on-device and comparing the results gives a usable signal without logprobs: a field the model reproduces consistently stays local, and a field where the samples disagree is exactly the one worth spending a cloud request on. The cloud is reserved for that disagreement, not used as the default reader."
+    alternatives:
+      - "Send every letter to the cloud and redact up front"
+      - "Cloud first, device as an offline fallback"
+  - decision: "Escalate unless unanimous — τ = 0.99"
+    reasoning: "Tuning on six real letters (denial, lease, bill, tax, benefit, penalty notice) and 24 field decisions changed the operating point. At k=5, 42% of fields escalated with zero misses; at k=3, 21% escalated with zero misses and roughly two-thirds less on-device time, so k=3 ships. An earlier 0.70 threshold missed wrong values, and a merge step that discarded one-off items could quietly push agreement to 1.0 while five wrong fields stayed local — so any discarded item now caps a field's agreement below the threshold."
+    alternatives:
+      - "k=5 for higher confidence at ~67% more on-device time"
+      - "A 0.70 threshold for fewer cloud calls and more missed errors"
+  - decision: "Re-read on device before redacting anything"
+    reasoning: "A disagreement does not always mean the field is wrong; it often means the first pass was sloppy. One focused question about that field, accepted only when the model can quote the letter word for word, settled the reference field on the real model and left the receipt reading 'Nothing was sent to the cloud' at zero characters. The retry is deliberately the smallest unit, and evidence is the condition for keeping it."
+    alternatives:
+      - "Redact and escalate as soon as any sample disagrees"
+      - "Re-run the whole extraction at a higher temperature"
+  - decision: "Check every checklist item against the letter, not just the field"
+    reasoning: "Agreement judges a field, so three plausible-sounding actions inside a confident field would pass. Each item is matched against the letter's words and its nearest sentence; an item with no support is labelled 'no match in letter' with the missing words and that sentence in the tooltip. On the real model's six letters it flagged three items, all on the tax letter, and all three were genuinely absent — including the dropped 'pay the amount due'."
+    alternatives:
+      - "Trust field-level agreement for list contents"
+      - "Suppress any item that does not match exactly"
+  - decision: "Show the payload, not a privacy promise"
+    reasoning: "A redaction layer nobody can see is a claim, not a control. The receipt names the character count and the redacted text before the request goes out, the response renders its inference source (on-device or in-cloud) as provenance, and the escalation path uses a separate cloud-only model instance so a second read can never silently drift back on-device. Offline, the second read is queued and the receipt says so."
+    alternatives:
+      - "A static privacy note in the UI"
+      - "Log the payload to the console for debugging only"
+techStack:
+  - "TypeScript"
+  - "React"
+  - "Vite"
+  - "Firebase AI Logic"
+  - "Gemini Nano 4 (Chrome Prompt API)"
+  - "Gemini 3.5 Flash-Lite"
+  - "Firebase App Check"
+impact:
+  metrics:
+    - label: "Fields escalated, k=3"
+      value: "21%, 0 missed"
+    - label: "Evaluated"
+      value: "24 field decisions, 6 letters"
+    - label: "Cloud payload shown"
+      value: "579 redacted characters"
+    - label: "Demo"
+      value: "2:24, one continuous take"
+  qualitative: "A working hybrid loop that is legible on screen: an on-device badge, a cloud badge, and a receipt naming exactly what left the device. The entry was submitted to #BuildHybridAI 2026 on 24 November 2026 with a public repository and a demo recorded against the real installed model, not demo data. The regression that matters is published alongside the result: agreement measures variance, not bias, so a field can be wrong while every sample agrees, and no threshold can see that."
+learnings:
+  - "Hybrid inference is a routing and evidence problem, not a model-selection problem"
+  - "Without logprobs, sample agreement is a workable confidence signal — and its blind spot is systematic error"
+  - "A redaction step is only trustworthy when the user can see the payload it produced"
+  - "The most dangerous failure mode is an empty answer that looks like a confident one"
+featured: true
+status: completed
+order: 0
+repo: "https://github.com/routebuilderdev/fineprint"
+---
+
+## Watch it run
+
+The [2:24 demo](https://youtu.be/w3wMmS6IJn0) is one continuous take against the real on-device model: a lease read locally, then the cloud leg with the redacted payload and its character count shown before it leaves.
+
+## What I'd change now
+
+The escalation ladder is honest but blunt: fields are escalated one at a time, and a field that failed twice within ten minutes is skipped rather than retried differently. The next version should measure per-sample latency on more hardware, add an OCR path for photographed letters instead of pasted text, and show a per-field "why" with the sentence that supports it. The hosted build is deliberately absent — App Check needs a registered reCAPTCHA domain, and a hosted page cannot demonstrate the on-device path on a machine whose Chrome has no model — so the repository and the video are the judged evidence.

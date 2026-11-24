@@ -10,7 +10,7 @@ import { openSourceContributions } from '../data/openSource';
 const allProjects = await getCollection('projects');
 const featuredProjects = allProjects
   .filter(p => p.data.featured === true)
-  .sort((a, b) => (a.data.order || 999) - (b.data.order || 999))
+  .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
   .slice(0, 3);
 
 const caseSnapshots = featuredProjects;
@@ -62,7 +62,7 @@ const recentDecisions = allDecisions
 
     <section class="introduction">
 <p>
-          I'm {siteConfig.author.name}, a {siteConfig.author.title.toLowerCase()}. I went from my first line of code to a live production platform for coach and bus drivers in under a year — one app in production, five documented builds, 70 merged pull requests into DefiLlama's open-source data tooling, and 418 automated tests gating every deploy. I build with coding agents and own every diff that ships — I set the architecture, review each change, and verify with tests and CI before anything goes live.
+          I'm {siteConfig.author.name}, a {siteConfig.author.title.toLowerCase()}. I went from my first line of code to a live production platform for coach and bus drivers in under a year — one app in production, six documented builds, 70 merged pull requests into DefiLlama's open-source data tooling, and 418 automated tests gating every deploy. I build with coding agents and own every diff that ships — I set the architecture, review each change, and verify with tests and CI before anything goes live.
         </p>
         <p>
           I document every major decision because great engineers don't just build things — they explain why.
@@ -74,8 +74,9 @@ const recentDecisions = allDecisions
       <span class="now-label">Currently · November 2026</span>
       <p>
         Maintaining No Scratch Nav in production · contributing adapter fixes to DefiLlama ·
-        building <a href="/projects/ship-confidence">Ship Confidence</a> and
-        <a href="/projects/correlation">Correlation</a>. Open to full-stack and AI-platform roles in the EU and UK.
+        submitted <a href="/projects/fine-print">Fine Print</a> to #BuildHybridAI 2026 in November,
+        with <a href="/projects/ship-confidence">Ship Confidence</a> and
+        <a href="/projects/correlation">Correlation</a> in the case studies. Open to full-stack and AI-platform roles in the EU and UK.
       </p>
     </section>
 

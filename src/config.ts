@@ -18,6 +18,7 @@ export const siteConfig = {
     github: getEnv('SOCIAL_GITHUB', 'https://github.com/routebuilderdev'),
     linkedin: getEnv('SOCIAL_LINKEDIN', 'https://www.linkedin.com/in/route-builder'),
     twitter: getEnv('SOCIAL_TWITTER', 'https://x.com/routebuilderdev'),
+    youtube: getEnv('SOCIAL_YOUTUBE', 'https://www.youtube.com/@routebuilderdev'),
     mastodon: getEnv('SOCIAL_MASTODON', ''),
     bluesky: getEnv('SOCIAL_BLUESKY', ''),
   },
@@ -30,6 +31,15 @@ export const siteConfig = {
     { label: 'Contact', href: '/contact' },
   ],
 } as const;
+
+export const socialLabels: Record<string, string> = {
+  github: 'GitHub',
+  linkedin: 'LinkedIn',
+  twitter: 'X',
+  youtube: 'YouTube',
+  mastodon: 'Mastodon',
+  bluesky: 'Bluesky',
+};
 
 export type SiteConfig = typeof siteConfig;
 export type NavItem = typeof siteConfig.nav[number];

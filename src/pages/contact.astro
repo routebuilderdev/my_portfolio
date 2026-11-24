@@ -1,16 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SEO from '../components/SEO.astro';
-import { siteConfig } from '../config';
+import { siteConfig, socialLabels } from '../config';
 import { pagesConfig } from '../pages.config';
 
 const socialLinks = Object.entries(siteConfig.social).filter(([_, url]) => url);
-
-const LABELS: Record<string, string> = {
-  github: 'GitHub',
-  linkedin: 'LinkedIn',
-  twitter: 'X · @routebuilderdev',
-};
 ---
 
 <BaseLayout>
@@ -35,7 +29,7 @@ const LABELS: Record<string, string> = {
         <div class="contact-social">
           {socialLinks.map(([platform, url]) => (
             <a href={url} target="_blank" rel="noopener noreferrer" class="contact-link">
-              {LABELS[platform] ?? platform.charAt(0).toUpperCase() + platform.slice(1)}
+              {socialLabels[platform] ?? platform.charAt(0).toUpperCase() + platform.slice(1)}
             </a>
           ))}
         </div>

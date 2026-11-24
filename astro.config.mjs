@@ -20,6 +20,7 @@ export default defineConfig({
       SOCIAL_GITHUB: envField.string({ context: 'client', access: 'public', default: 'https://github.com/routebuilderdev' }),
       SOCIAL_LINKEDIN: envField.string({ context: 'client', access: 'public', default: 'https://www.linkedin.com/in/route-builder' }),
       SOCIAL_TWITTER: envField.string({ context: 'client', access: 'public', default: 'https://x.com/routebuilderdev' }),
+      SOCIAL_YOUTUBE: envField.string({ context: 'client', access: 'public', default: 'https://www.youtube.com/@routebuilderdev' }),
       SOCIAL_MASTODON: envField.string({ context: 'client', access: 'public', default: '' }),
       SOCIAL_BLUESKY: envField.string({ context: 'client', access: 'public', default: '' }),
     },

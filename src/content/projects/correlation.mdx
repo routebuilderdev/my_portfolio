@@ -1,6 +1,6 @@
 ---
 title: "Correlation"
-role: "Creator & Developer"
+role: "Creator — AI-directed build"
 year: 2026
 duration: "10-day hackathon build"
 outcomeSummary: "Parametric insurance for AI-agent swarms: a Rust contract on NEAR verifies signed agent receipts on-chain and pays out automatically — 18 of 20 agents failed, 7.8284 NEAR paid, no oracle involved"
@@ -11,7 +11,7 @@ constraints:
   - "Every agent receipt is ECDSA-signed inside the model's TEE — the contract sees raw request and response bytes only"
   - "Verification must be cheap enough to run per receipt, with finality in seconds"
   - "One hackathon submission per repository — the public artifact had to be finished and honest"
-approach: "Built a Rust smart contract on NEAR plus a TypeScript monorepo for the fleet harness, the verifier API and the demo UI. When a claim is submitted, the contract re-derives the expected task input from the policy, rebuilds the exact signed text, recovers the signer from the signature, and recomputes the failure arithmetic itself. Twenty signed receipts produce an index; when the index crosses the policy's threshold, the contract pays. Nothing about the payout is decided off-chain."
+approach: "The build is a Rust smart contract on NEAR plus a TypeScript monorepo for the fleet harness, the verifier API and the demo UI, implemented by AI agents under my specification. When a claim is submitted, the contract re-derives the expected task input from the policy, rebuilds the exact signed text, recovers the signer from the signature, and recomputes the failure arithmetic itself. Twenty signed receipts produce an index; when the index crosses the policy's threshold, the contract pays. Nothing about the payout is decided off-chain."
 keyDecisions:
   - decision: "Verify receipts on-chain instead of trusting a report"
     reasoning: "The product only works if the buyer doesn't have to believe the seller. Recovering the signer from the receipt bytes and recomputing the index inside the contract makes the payout a proof rather than a claim. The alternative — an operator-submitted failure report — is exactly the model the product is trying to replace."

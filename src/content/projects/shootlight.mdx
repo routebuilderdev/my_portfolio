@@ -1,17 +1,17 @@
 ---
 title: "ShootLight"
-role: "Creator & Developer"
+role: "Creator — AI-directed build"
 year: 2026
 duration: "1 week"
-outcomeSummary: "Built a PWA for photographers with real-time golden hour tracking, weather alerts, and offline support"
+outcomeSummary: "A PWA for photographers with real-time golden hour tracking, weather alerts, and offline support"
 overview: "ShootLight is a progressive web app that helps photographers find the best lighting conditions for outdoor shoots."
 problem: "Photographers waste time checking multiple apps for weather, golden hour timing, and location conditions. No single tool combines geolocation-aware lighting predictions with push notifications."
 constraints:
   - "Must work offline for remote locations"
   - "Push notifications without native app stores"
   - "Accurate sunrise/sunset and golden hour calculations"
-  - "AI-generated code, human-owned judgment: every line reviewed and verified before ship"
-approach: "Built as a PWA from the start for offline-first capability. Integrated weather API for real-time conditions, built custom golden hour calculator, and used service workers for offline caching. Push notifications deliver alerts when optimal shooting conditions approach."
+  - "AI-generated code: verification is behavioural — tests, CI, and the installed PWA rather than line-by-line reading"
+approach: "Started as a PWA for offline-first capability. Integrated weather API for real-time conditions, built custom golden hour calculator, and used service workers for offline caching. Push notifications deliver alerts when optimal shooting conditions approach."
 keyDecisions:
   - decision: "PWA over native mobile app"
     reasoning: "PWA eliminates app store barriers, works across platforms, and supports offline caching. Service workers provide push notifications without native code."

@@ -1,9 +1,9 @@
 ---
 title: "Permesso Bot — Italian Residence RAG Assistant"
-role: "Creator & Developer"
+role: "Creator — AI-directed build"
 year: 2026
 duration: "Ongoing"
-outcomeSummary: "Built an advanced RAG assistant for Italian residence-permit questions — Python, Streamlit chat UI, ChromaDB retrieval, scenario-aware queries, confidence scoring with citations"
+outcomeSummary: "Directed the build of an advanced RAG assistant for Italian residence-permit questions — Python, Streamlit chat UI, ChromaDB retrieval, scenario-aware queries, confidence scoring with citations"
 overview: "An advanced retrieval-augmented generation system that assists users with Italian residence-permit procedures: a Streamlit chat interface over a knowledge base of government PDFs, crawled web pages, and legal texts. Local models via Ollama (Qwen3 for answers, nomic-embed-text for embeddings), ChromaDB for semantic retrieval, and every answer carries confidence scores with numbered citations — so users know when to consult a lawyer. The retrieval layer was later rewritten separately as a .NET 8 / ASP.NET Core + Qdrant port; this case study covers the Python original, which is the one linked below."
 problem: "Italian residence-permit procedures are complex, multi-step processes with frequent regulation changes, and official information is scattered across PDFs and government websites. Generic chatbots hallucinate legal details; a useful assistant must ground every claim in a retrievable source and say how sure it is."
 constraints:
@@ -11,8 +11,8 @@ constraints:
   - "Answers must carry confidence scores and numbered citations — users must know when to consult a lawyer"
   - "Must handle multiple document sources: PDFs, crawled government pages, text files"
   - "Must track document versions — regulations change, answers must cite the current text"
-  - "Every shipped line must be understood and reviewable — nothing deploys that I can't explain"
-approach: "Built the ingestion pipeline first: PDF loading, async web crawling of official sources with retry logic, and source classification (official_gov, legal_texts, case_studies, informative). Documents go through semantic chunking that preserves Italian legal structure (sections, articles, paragraphs) with metadata enrichment for scenario tagging. At query time, a scenario manager detects complex cases (mixed marriages, work permits, family reunification, asylum), boosts the query with Italian legal terminology, and runs top-k retrieval against ChromaDB with version tracking. Generation uses legal-specific Italian prompt templates so the model answers only from context, with precedent extraction surfacing documented case examples and a daily scheduler keeping the knowledge base current."
+  - "Every behaviour must be explainable and covered by tests — nothing deploys on the agent's word alone"
+approach: "The build started with the ingestion pipeline: PDF loading, async web crawling of official sources with retry logic, and source classification (official_gov, legal_texts, case_studies, informative). Documents go through semantic chunking that preserves Italian legal structure (sections, articles, paragraphs) with metadata enrichment for scenario tagging. At query time, a scenario manager detects complex cases (mixed marriages, work permits, family reunification, asylum), boosts the query with Italian legal terminology, and runs top-k retrieval against ChromaDB with version tracking. Generation uses legal-specific Italian prompt templates so the model answers only from context, with precedent extraction surfacing documented case examples and a daily scheduler keeping the knowledge base current."
 keyDecisions:
   - decision: "Scenario-aware retrieval over plain top-k search"
     reasoning: "Legal questions are vocabulary-sensitive: the documents say 'coniuge' while the user asks about 'moglie'. Detecting the scenario first and boosting the query with domain terminology closes that gap before retrieval ever runs."

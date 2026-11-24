@@ -5,12 +5,12 @@ const getEnv = (key: string, fallback: string = ''): string => {
 export const siteConfig = {
   url: getEnv('SITE_URL', 'https://routebuilder.developer.li'),
   language: getEnv('SITE_LANGUAGE', 'en'),
-  title: getEnv('SITE_TITLE', 'Full-Stack Developer — AI-Native Workflow'),
-  description: getEnv('SITE_DESCRIPTION', 'Full-stack developer shipping production apps owned end to end: architecture, review, and verification with tests and CI. Documented decisions, trade-offs, and outcomes.'),
+  title: getEnv('SITE_TITLE', 'AI-Native Developer — Production Apps, Documented'),
+  description: getEnv('SITE_DESCRIPTION', 'AI-native developer shipping production apps by specifying them, directing coding agents, and verifying behaviour with tests, CI and the running app. Documented decisions, trade-offs, and outcomes.'),
   author: {
     name: getEnv('SITE_AUTHOR_NAME', 'routebuilderdev'),
-    title: getEnv('SITE_AUTHOR_TITLE', 'Full-Stack Developer'),
-    bio: getEnv('SITE_AUTHOR_BIO', 'Full-stack developer with an AI-native workflow: every feature specified first, AI-generated, reviewed line by line, and gated by tests and CI/CD before it ships.'),
+    title: getEnv('SITE_AUTHOR_TITLE', 'AI-Native Developer'),
+    bio: getEnv('SITE_AUTHOR_BIO', 'AI-native developer: every feature specified first, implemented by coding agents, and verified through tests, CI/CD and a live deployment before it ships. I do not write the code myself — I define the behaviour, direct the agents, and check the result.'),
     email: getEnv('SITE_AUTHOR_EMAIL', 'routebuilderdev@gmail.com'),
     location: getEnv('SITE_AUTHOR_LOCATION', ''),
   },

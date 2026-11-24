@@ -32,11 +32,11 @@ const recentDecisions = allDecisions
       <div class="hero-grid">
         <div class="hero-left">
           <h1 class="hero-title">
-            I ship production apps I architect, review, and verify — built with coding agents, owned end to end.<br/>
-            <span class="hero-title-emphasis">Every build documented — decisions, trade-offs, outcomes.</span>
+            I ship production apps by specifying them precisely, directing coding agents, and verifying the result — end to end.<br/>
+            <span class="hero-title-emphasis">Every build documented — decisions, trade-offs, and where it breaks.</span>
           </h1>
           <p class="hero-sub">
-            {siteConfig.author.name} — {siteConfig.author.title}. TypeScript, Python, Rust, C#/.NET, React, Node.js, PostgreSQL.
+            {siteConfig.author.name} — {siteConfig.author.title}. I don't write the code; I define the behaviour, direct the agents, and verify the result. Stacks shipped: TypeScript, Python, Rust, C#/.NET, React, Node.js, PostgreSQL.
           </p>
           <p class="hero-meta">
             Case studies of real applications and merged open-source work — not screenshots.
@@ -62,7 +62,7 @@ const recentDecisions = allDecisions
 
     <section class="introduction">
 <p>
-          I'm {siteConfig.author.name}, a {siteConfig.author.title.toLowerCase()}. I went from my first line of code to a live production platform for coach and bus drivers in under a year — one app in production, six documented builds, 70 merged pull requests into DefiLlama's open-source data tooling, and 418 automated tests gating every deploy. I build with coding agents and own every diff that ships — I set the architecture, review each change, and verify with tests and CI before anything goes live.
+          I'm {siteConfig.author.name}, an AI-native developer. I went from my first commit to a live production platform for coach and bus drivers in under a year — one app in production, six documented builds, 70 merged pull requests into DefiLlama's open-source data tooling, and 418 automated tests gating the flagship app's deploy. I don't write code: I specify the behaviour, direct the agents that implement it, and verify the result with tests, CI and the running app. Nothing ships on an agent's word alone, and the limits are written down next to the claims.
         </p>
         <p>
           I document every major decision because great engineers don't just build things — they explain why.
@@ -135,10 +135,10 @@ const recentDecisions = allDecisions
       </div>
     </section>
 
-    <section class="skills">
-      <div class="section-header">
-        <h2>Skills</h2>
-      </div>
+    <section class="skills">        <div class="section-header">
+          <h2>Skills</h2>
+        </div>
+        <p class="skills-note">Stacks I have shipped with by directing agents. The list describes what the projects run on, not a claim that I typed the implementation.</p>
       <div class="skills-grid">
         <div class="skill-group">
           <h3>AI / LLM Engineering</h3>
@@ -162,7 +162,7 @@ const recentDecisions = allDecisions
     <section class="thinking">
       <h2>Problems I Enjoy Solving</h2>
       <p class="thinking-list">
-        Designing APIs and schemas before writing code · Choosing the right database for the shape of the data · Shipping with CI/CD from day one · Turning real-world constraints (like map API terms of service) into product decisions · Building trust and safety into community products · Using AI as an engineering partner without letting it make the decisions
+        Specifying APIs and schemas before any code is generated · Choosing the right database for the shape of the data · Shipping with CI/CD from day one · Turning real-world constraints (like map API terms of service) into product decisions · Building trust and safety into community products · Directing AI agents without handing them the product decisions
       </p>
     </section>
 
@@ -228,6 +228,7 @@ const recentDecisions = allDecisions
   .no-decisions { color: var(--color-text-muted); font-style: italic; padding: 1.5rem 0; }
   .skills { margin-bottom: 5rem; }
   .skills h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1.25rem; letter-spacing: -0.01em; }
+  .skills-note { font-size: 0.875rem; line-height: 1.7; color: var(--color-text-muted); max-width: 720px; margin: -0.5rem 0 1.5rem; }
   .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
   .skill-group { padding: 1.25rem 1.5rem; background: var(--color-bg-secondary); border: 1px solid var(--color-border); border-radius: 8px; }
   .skill-group h3 { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-accent); margin-bottom: 0.625rem; }

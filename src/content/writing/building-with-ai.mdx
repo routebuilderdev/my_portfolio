@@ -1,5 +1,5 @@
 ---
-title: "How I Ship Production Apps with AI as a Pair Programmer"
+title: "How I Ship Production Apps by Directing AI Agents"
 description: "My workflow for building full-stack applications with AI as an engineering partner — not just a code generator."
 publishDate: 2026-07-01
 tags:
@@ -11,7 +11,7 @@ draft: false
 
 ## The Setup
 
-I started from zero code — my first commit was literally my first line of code ever. Today I ship full-stack production apps with AI as my engineering partner. No CS degree, no bootcamp, no years of tutorials. Just a clear process and an AI pair programmer on every commit.
+I started from zero — I don't write code and I can't read it. Today I ship full-stack production apps. No CS degree, no bootcamp, no years of tutorials. Just a clear process, an AI agent doing the implementation, and a verification loop I actually run on every change.
 
 Here's exactly how I do it.
 
@@ -23,26 +23,26 @@ I start with a clear problem statement. Not "build an app" but "a coach driver c
 
 ### 2. Architecture Discussions
 
-Before writing code, I prompt the AI to discuss architecture. Database choice, monorepo vs microservices, caching strategy. The AI explains trade-offs, I make decisions based on my understanding.
+Before any code is generated, I ask the agent to lay out the architecture options and their trade-offs. It writes the analysis; I make the product decision and write down why.
 
 ### 3. Iterative Building
 
 Each feature is one prompt cycle:
-- Explain what I want
-- AI writes the code
-- I review the logic (not syntax)
+- Explain what I want, including the behaviour and the failure cases
+- AI writes the code and summarises what changed
+- I check the claim against the tests, the CI run, and the running app
 - Commit and push
-- CI/CD runs tests
-- If red, I paste the error back to AI
+- CI/CD runs the suite
+- If it is red, the error goes back to the agent
 
 ### 4. Testing Is Non-Negotiable
 
-I can't manually verify every edge case, so tests are my safety net. Every feature includes tests written by AI and reviewed by me for logical correctness. 313 passing tests across the flagship app — 222 backend, 91 frontend — is what makes production deployment possible.
+I can't read the implementation, so tests are not a nice-to-have — they are the only evidence I can check. Every feature lands with tests for the behaviour I specified, and CI refuses a red suite. 328 passing tests across the flagship app — 237 backend, 91 frontend, plus 90 Playwright end-to-end checks — is what makes production deployment defensible.
 
 ## Key Lessons
 
 - **Constrained problems** produce better code than open-ended ones
 - **Monorepo** keeps AI context coherent
 - **CI/CD** creates a tight feedback loop
-- **Read the tests** to understand what the code does
-- **AI pairs you with a senior engineer on demand** — but you still own the decisions, the architecture, and the quality bar
+- **The spec and the tests are the contract** — keep both readable, because they are what you verify against
+- **AI gives you senior-level implementation on demand** — the product decisions, the constraints, and the quality bar stay yours

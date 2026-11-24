@@ -27,7 +27,7 @@ export const openSourceContributions: OpenSourceContribution[] = [
     role: 'Open-source contributor — adapters and data tooling',
     period: 'September – November 2026',
     summary:
-      'DefiLlama is the largest open aggregator of DeFi TVL and protocol data. Its adapters are the code that reads each protocol, chain and exchange on-chain, and hundreds of dashboards consume their output. I contributed 70 merged pull requests across its adapter and SDK repositories — mostly correctness work in a pipeline where a silent failure looks exactly like a quiet day.',
+      'DefiLlama is the largest open aggregator of DeFi TVL and protocol data. Its adapters are the code that reads each protocol, chain and exchange on-chain, and hundreds of dashboards consume their output. I authored 70 merged pull requests across its adapter and SDK repositories — changes written with AI agents and reviewed by DefiLlama maintainers, mostly correctness work in a pipeline where a silent failure looks exactly like a quiet day.',
     stats: [
       { label: 'Merged PRs', value: '70' },
       { label: 'Repositories', value: '4' },
@@ -58,7 +58,7 @@ export const openSourceContributions: OpenSourceContribution[] = [
     themes: [
       {
         title: 'Fail loudly instead of under-reporting',
-        body: 'The most expensive bug in a data pipeline is the one that returns a number. I removed silent catch handlers that swallowed vault and borrow-query failures, made failed account batches retry instead of being dropped, and skipped borrowed-balance maths when the liquidity read fails rather than counting it as zero.',
+        body: 'The most expensive bug in a data pipeline is the one that returns a number. The changes remove silent catch handlers that swallowed vault and borrow-query failures, make failed account batches retry instead of being dropped, and skip borrowed-balance maths when the liquidity read fails rather than counting it as zero.',
         prs: [
           {
             title: 'fix(valdora, eris-protocol): remove silent .catch() handlers that swallow vault/arb query failures',
@@ -76,7 +76,7 @@ export const openSourceContributions: OpenSourceContribution[] = [
       },
       {
         title: 'Proof-of-reserves coverage across chains',
-        body: 'Exchange reserve adapters under-count when a chain or wallet set is missing, and the shortfall is invisible. I added missing chains and reserve legs for Binance, Bybit, Bitstamp, Bitget and OKX, including ADA (~$103M) and WLD on World Chain (~40M), and tracked Bitstamp’s attested XRPL wallets.',
+        body: 'Exchange reserve adapters under-count when a chain or wallet set is missing, and the shortfall is invisible. The changes add missing chains and reserve legs for Binance, Bybit, Bitstamp, Bitget and OKX, including ADA (~$103M) and WLD on World Chain (~40M), and track Bitstamp’s attested XRPL wallets.',
         prs: [
           {
             title: 'Binance: add ADA reserves leg (~$103M)',
@@ -98,7 +98,7 @@ export const openSourceContributions: OpenSourceContribution[] = [
       },
       {
         title: 'Adapter hygiene at scale',
-        body: 'Thousands of adapters share a handful of helpers, so one bad default echoes everywhere. I applied a 30-second timeout to direct axios calls, removed dead endpoints that were quietly failing on every run, and enumerated factory strategies through their count accessor instead of assuming a fixed list.',
+        body: 'Thousands of adapters share a handful of helpers, so one bad default echoes everywhere. The patches apply a 30-second timeout to direct axios calls, remove dead endpoints that were quietly failing on every run, and enumerate factory strategies through their count accessor instead of assuming a fixed list.',
         prs: [
           {
             title: 'Apply default 30s timeout to direct axios calls in helpers',
@@ -116,7 +116,7 @@ export const openSourceContributions: OpenSourceContribution[] = [
       },
     ],
     practices: [
-      'Read the surrounding adapters before writing one — the conventions are the review criteria.',
+      'Have the agent read the surrounding adapters before writing one — the conventions are the review criteria.',
       'Keep the diff to the cause. A correctness fix that also reformats the file is two reviews.',
       'Never fall through to a default value when a read fails; an error is data, a zero is a lie.',
       'State what changed and how it was checked in the PR body, so a maintainer can verify without asking.',

@@ -3,7 +3,7 @@ import { siteConfig } from './config';
 export const pagesConfig = {
   projects: {
     title: `Projects - ${siteConfig.title}`,
-    description: 'Case studies of applications I have built with AI.',
+    description: 'Case studies of applications built with AI under my direction.',
     heading: 'Case Studies',
     intro: 'Production applications and hackathon builds, documented end to end. Each case study covers the problem, the approach, the decisions that mattered, and what actually shipped.',
   },
@@ -17,7 +17,7 @@ export const pagesConfig = {
     title: `Journey - ${siteConfig.title}`,
     description: 'My journey from non-coder to shipping production apps with AI.',
     heading: 'My Journey',
-    intro: 'From my first line of code to production deployments — the milestones, learnings, and transitions along the way.',
+    intro: 'From my first commit to production deployments — the milestones, learnings, and transitions along the way.',
   },
   writing: {
     title: `Writing - ${siteConfig.title}`,

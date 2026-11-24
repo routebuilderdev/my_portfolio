@@ -1,6 +1,6 @@
 ---
 title: "Ship Confidence"
-role: "Creator & Developer"
+role: "Creator — AI-directed build"
 year: 2026
 duration: "Codegeist 2026 build"
 outcomeSummary: "A release gate for Jira: six read-only MCP tools and a Jira project page that answer 'is this version safe to ship?' with a 0–100 score, the blockers behind it, and an explicit account of what could not be read"
@@ -12,7 +12,7 @@ constraints:
   - "rovo:action inputs accept only strings, integers, numbers and booleans, 5 MB payload"
   - "Tool calls run as the invoking user, so permissions are the security boundary"
   - "A missing scope does not error — it returns an empty result"
-approach: "Designed the domain first: pure scoring, risk factors and comparison logic with no SDK, no fetch and no clock, so the rules are testable without a Forge runtime. Six thin action adapters sit on top, each ~25 lines, and a single port wraps the Teamwork Graph client with a 12-second timeout per query. Because a denied scope is indistinguishable from an empty project by response alone, a separate access probe classifies the ambiguity and the result envelope carries a coverage caveat instead of silently reporting zero."
+approach: "The build started from the domain: pure scoring, risk factors and comparison logic with no SDK, no fetch and no clock, so the rules are testable without a Forge runtime. Six thin action adapters sit on top, each ~25 lines, and a single port wraps the Teamwork Graph client with a 12-second timeout per query. Because a denied scope is indistinguishable from an empty project by response alone, a separate access probe classifies the ambiguity and the result envelope carries a coverage caveat instead of silently reporting zero."
 keyDecisions:
   - decision: "One domain layer, two surfaces"
     reasoning: "The verdict has to be identical whether it is read in a chat client or on a Jira page. Keeping scoring, risk factors, comparison and the page's copy in pure modules — with the Forge runtime behind a port — means both surfaces call the same functions, and 73 tests run in milliseconds without mocking the platform."

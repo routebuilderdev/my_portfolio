@@ -1,10 +1,10 @@
 ---
 title: "No Scratch Nav"
-role: "Creator & Developer"
+role: "Creator — AI-directed build"
 year: 2026
 duration: "Ongoing"
-outcomeSummary: "Built a community route-sharing platform for coach and bus drivers with AI — 328 Jest tests (237 backend + 91 frontend), 90 Playwright end-to-end tests, 30+ API endpoints, CI/CD, live in production"
-overview: "No Scratch Nav is a community platform for professional coach and bus drivers. Drivers share Google Maps routes they have driven safely — through narrow city centres, under low bridges, into tight hotel and airport approaches — so other drivers can trust a route before they commit to it. AI agents wrote most of the code; I specified each feature, reviewed every diff, and gated every change with tests and CI/CD."
+outcomeSummary: "A community route-sharing platform for coach and bus drivers, specified and directed by me and built by AI agents — 328 Jest tests (237 backend + 91 frontend), 90 Playwright end-to-end tests, 30+ API endpoints, CI/CD, live in production"
+overview: "No Scratch Nav is a community platform for professional coach and bus drivers. Drivers share Google Maps routes they have driven safely — through narrow city centres, under low bridges, into tight hotel and airport approaches — so other drivers can trust a route before they commit to it. AI agents wrote the code; I specified each feature, judged the behaviour, and gated every change with tests and CI/CD. I do not read the implementation line by line, so verification is behavioural: the test suite, the pipeline, and the deployed app."
 problem: "Standard navigation apps assume a car. A 14-metre coach fails where a car fits: narrow historic city centres, low-bridge and height-restricted zones, and tight hotel, airport, or attraction approaches. There is no way to know whether a route actually works for a large vehicle until you are already committed to it. The safest route is one another experienced driver has already driven successfully."
 constraints:
   - "No prior coding experience when starting"
@@ -12,7 +12,7 @@ constraints:
   - "Must work well on mobile — drivers use it on the road"
   - "Community trust: shared routes need signals (upvotes, verified drivers) so drivers can trust them"
   - "Zero budget for third-party mapping APIs"
-approach: "Built incrementally with AI pair programming. Started with a React + TypeScript + Material UI frontend and a Node.js + Express API, then added PostgreSQL for routes, requests, users, and upvotes; Redis for caching and rate limiting; and a Telegram bot for notifications. Features shipped one at a time: sharing routes, searching and filtering, route requests, and a drag-and-drop trip planner."
+approach: "Built incrementally by directing AI agents. Started with a React + TypeScript + Material UI frontend and a Node.js + Express API, then added PostgreSQL for routes, requests, users, and upvotes; Redis for caching and rate limiting; and a Telegram bot for notifications. Features shipped one at a time: sharing routes, searching and filtering, route requests, and a drag-and-drop trip planner."
 keyDecisions:
   - decision: "Monorepo structure from day one"
     reasoning: "AI tools work better with a single coherent context. Shared types, a single CI config, and one codebase to prompt around made every iteration faster."
@@ -62,7 +62,7 @@ learnings:
   - "Monorepo structure makes AI prompting more coherent"
   - "Investment in CI/CD early saves debugging time later"
   - "AI can handle full-stack development when given clear, constrained problems"
-  - "Testing is critical when you can't manually validate every edge case"
+  - "Testing is the verification layer when you cannot read the implementation"
   - "Product constraints (like Google Maps ToS) can shape architecture and lead to better product decisions"
 featured: true
 status: ongoing
